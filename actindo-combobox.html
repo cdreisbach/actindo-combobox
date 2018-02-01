@@ -717,8 +717,6 @@
                 //We could not restore the selected value
                 if( !found )
                 {
-                    console.warn("not found");
-                    console.log(me._selectedItem);
                     //We are doing remote search => lets insert the selected item at the beginning; or items is not there because of paging
                     if( ( this.searchValue.length > 0 || this._paged )&& this._selectedItem && this.remote.length > 0 )
                     {
