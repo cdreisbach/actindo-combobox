@@ -1,0 +1,23 @@
+{
+    "name": "actindo-combobox",
+    "version": "0.1.0",
+    "description": "A paper-dropdown-menu wrapper that supports remote loading, paging and remote/local filtering",
+    "license": "Apache-2.0",
+    "main": "actindo-combobox.html",
+    "keywords": [
+        "polymer",
+        "web-components"
+    ],
+    "ignore": [
+        "**/.*",
+        "bower_components"
+    ],
+    "dependencies": {
+        "polymer": "Polymer/polymer#^2.0.0",
+        "paper-dropdown-menu": "^2.0.0",
+        "paper-listbox": "^2.0.0",
+        "paper-item": "^2.0.0",
+        "paper-icon-button": "^0.1.3"
+    }
+}
+

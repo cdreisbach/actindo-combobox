@@ -1,0 +1,964 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../polymer/lib/utils/debounce.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<dom-module id="actindo-combobox">
+    <template>
+        <style>
+
+            /*:host([multi]) paper-item {
+                background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMCcgaGVpZ2h0PSczMCc+PHBhdGggZD0nTTE5IDV2MTRINVY1aDE0bTAtMkg1Yy0xLjEgMC0yIC45LTIgMnYxNGMwIDEuMS45IDIgMiAyaDE0YzEuMSAwIDItLjkgMi0yVjVjMC0xLjEtLjktMi0yLTJ6Jy8+PC9zdmc+") no-repeat;
+                background-position: 7px 12px;
+                padding-left: 40px;
+            }
+            :host([multi]) paper-item.iron-selected {
+                background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMCcgaGVpZ2h0PSczMCc+PHBhdGggZD0nTTE5IDNINWMtMS4xMSAwLTIgLjktMiAydjE0YzAgMS4xLjg5IDIgMiAyaDE0YzEuMTEgMCAyLS45IDItMlY1YzAtMS4xLS44OS0yLTItMnptLTkgMTRsLTUtNSAxLjQxLTEuNDFMMTAgMTQuMTdsNy41OS03LjU5TDE5IDhsLTkgOXonLz48L3N2Zz4=") no-repeat;
+                background-position: 7px 12px;
+            }*/
+
+            :host(.no-underline)
+            {
+                --paper-input-container-underline: {
+                    display: none;
+                };
+                --paper-input-container-underline-focus: {
+                    display: none;
+                };
+                --paper-input-container-color: {
+                    color: white;
+                };
+            }
+
+            paper-dropdown-menu {
+                --paper-dropdown-menu-button: {
+                    left: 0;
+                    width: 100%;
+                };
+                width: 100%;
+            }
+            paper-listbox {
+                overflow-x: hidden;
+                position: relative;
+            }
+
+            div.loadingContainer
+            {
+                position: absolute;
+                top: 0;
+                bottom:0;
+                left: 0;
+                right: 0;
+                background-color: white;
+                z-index: 1;
+                opacity: 0.7;
+            }
+
+            paper-item {
+                padding: 0 3em 0 1em;
+            }
+            #searchBox {
+                z-index: 2;
+                box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(0, 0, 0, 0.12);
+                padding: 0 2px 0 16px;
+                border: none;
+                width: 100%;
+                height: 48px;
+                line-height: 48px;
+            }
+            #searchBox:focus {
+                outline: none;
+            }
+            input
+            {
+                @apply(--paper-font-subhead);
+                background-color: transparent;
+                border:none;
+            }
+            input:focus
+            {
+                outline: none;
+            }
+            .paging {
+                align-items: center;
+                border-top: 1px solid var(--actindo-border-dark);
+                display: none;
+                justify-content: center;
+                flex-direction: column;
+                padding-top: 0.5rem;
+            }
+            .paged-true
+            {
+                min-width: 9rem;
+            }
+            .visible-true
+            {
+                display: flex;
+            }
+
+            .visible-false
+            {
+                display: none;
+            }
+
+        </style>
+
+
+        <paper-dropdown-menu
+                label="{{label}}"
+                verticalAlign="bottom"
+                id="dropdown"
+                no-label-float="[[noLabelFloat]]"
+                always-label-float="[[alwaysLabelFloat]]"
+                no-animations="[[noAnimations]]"
+                horizontal-align="[[horizontalAlign]]"
+                vertical-align="[[verticalAlign]]"
+                disabled="[[disabled]]"
+        >
+            <paper-listbox slot="dropdown-content" selected="{{selected}}">
+                <template is="dom-if" if="{{searchable}}">
+                    <iron-input
+                            id="searchBox"
+                            bind-value="{{searchValue}}"
+                            on-tap="_stopEventPropagation"
+                            on-click="_stopEventPropagation"
+                            on-keydown="_stopEventPropagation"
+                            on-keyup="_stopEventPropagation">
+                        <input placeholder="Search...">
+                    </iron-input>
+                </template>
+                <template is="dom-repeat" items="{{items}}" as="item">
+                    <paper-item style$="[[item.style]]" class$="paged-[[_paged]]" on-tap="_onPaperItemTap" item-value="[[_getValue(item.*)]]">[[_getDisplayValue(item.*)]]</paper-item>
+                </template>
+                <div class$="loadingContainer visible-[[_loading]]"></div>
+                <div class$="paging visible-[[_paged]]" style="z-index: 2" on-tap="_stopEventPropagation" on-click="_stopEventPropagation">
+                    <div>
+                        [[_getItemsFrom(page, itemsPerPage, totalItems)]]-[[_getItemsTo(page, itemsPerPage, totalItems)]] <span style="opacity: 0.72">of [[totalItems]]</span>
+                    </div>
+                    <div>
+                        <paper-icon-button disabled="[[!_canPageBackward(page)]]" icon="first-page" on-tap="firstPage"></paper-icon-button>
+                        <paper-icon-button disabled="[[!_canPageBackward(page)]]" icon="chevron-left" on-tap="previousPage"></paper-icon-button>
+                        <paper-icon-button disabled="[[!_canPageForward(page, itemsPerPage, totalItems)]]" icon="chevron-right" on-tap="nextPage"></paper-icon-button>
+                        <paper-icon-button disabled="[[!_canPageForward(page, itemsPerPage, totalItems)]]" icon="last-page" on-tap="lastPage"></paper-icon-button>
+                    </div>
+                </div>
+            </paper-listbox>
+        </paper-dropdown-menu>
+    </template>
+    <script>
+        class ActindoCombobox extends Polymer.Element {
+            static get is()
+            {
+                return "actindo-combobox";
+            }
+            static get properties()
+            {
+                return {
+
+
+                    /**
+                     * set to true if combobox is disabled
+                     */
+                    disabled: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    /**
+                     * Contains all the items; filled either by remote request or if no remote is given by parameter
+                     */
+                    items: {
+                        type: Array,
+                        value: function() {return [];},
+                        observer: "onItemsChange",
+                        notify: true
+                    },
+
+
+                    /**
+                     * Defines if the combobox is searchable
+                     */
+                    searchable: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    /**
+                     * Label of the combobox
+                     */
+                    label: {
+                        type: String
+                    },
+
+                    /**
+                     * Contains the row index of the selected value
+                     * @private
+                     */
+                    selected: {
+                        type: Number,
+                        observer: "selectedChanged",
+                    },
+
+                    /**
+                     * Contains the current selected item
+                     * @private
+                     */
+                    _selectedItem: {
+                        type: Object,
+                    },
+
+                    /**
+                     * Contains the current selected item without style attribute
+                     */
+                    selectedItem: {
+                        type: Object,
+                        computed: "_getSelectedItem(_selectedItem)",
+                        notify: true
+                    },
+
+                    /**
+                     * Contains the content of the value field of the selected item
+                     */
+                    selectedValue: {
+                        type: String,
+                        notify: true,
+                        observer: "selectedValueChanged"
+                    },
+
+                    /**
+                     * Determines which field is used to display a row
+                     */
+                    displayField: {
+                        type: String,
+                        value: "text"
+                    },
+
+                    /**
+                     * Determines which fields is used to fill the selectedValue field
+                     */
+                    valueField: {
+                        type: String,
+                        value: "id"
+                    },
+
+                    /**
+                     * Could contain a render function that determines how the row looks like
+                     */
+                    render: {
+                        type: Object
+                    },
+
+                    /**
+                     * Contains the current search pattern
+                     */
+                    searchValue: {
+                        type: String,
+                        value: "",
+                        observer: "_doSearch"
+                    },
+
+                    /**
+                     * Contains the url from where the data is obtained
+                     */
+                    remote: {
+                        type: String,
+                        value: "",
+                        observer: "_onRemoteChanged"
+                    },
+
+                    /**
+                     * Determines if the search is done locally or remotely if a remote is set
+                     */
+                    remoteSearch: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    /**
+                     * Params that are sent when remote data is loaded
+                     */
+                    params: {
+                        type: Object,
+                        value: {},
+                        observer: "_onParamsChanged"
+                    },
+
+                    /**
+                     * Determines which field of the response is contains the items
+                     */
+                    remotePathData: {
+                        type: String,
+                        value: "data"
+                    },
+
+                    /**
+                     * Determines which field of the response is determines the total count items
+                     */
+                    totalItemsField: {
+                        type: String,
+                        value: "n_rows"
+                    },
+
+                    /**
+                     * Determines if the box is automatically loading from remote
+                     */
+                    autoLoad: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    /**
+                     * Numbers of items per page
+                     */
+                    itemsPerPage: {
+                        type: Number,
+                        value: -1,
+                        observer: "_onItemsPerPageChanged"
+                    },
+
+                    /**
+                     * @private
+                     * true if itemsPerPage > 0
+                     */
+                    _paged: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    /**
+                     * Determine which field we use in the request to define the start of the paging
+                     */
+                    startField: {
+                        type: String,
+                        value: "start"
+                    },
+
+                    /**
+                     * Determines which field is used in the request to send the limit
+                     */
+                    limitField: {
+                        type: String,
+                        value: "limit"
+                    },
+
+                    /**
+                     * Information how many items would exist in total
+                     */
+                    totalItems: {
+                        type: Number,
+                        value: 0
+                    },
+
+                    /**
+                     * current page we are on
+                     */
+                    page: {
+                        type: Number,
+                        value: 1,
+                        observer: "onPageChanged"
+                    },
+
+                    /**
+                     * True if combobox is currently loading
+                     * @private
+                     */
+                    _loading: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    /**
+                     * Amount of active transactions
+                     * @private
+                     */
+                    _loadingCount: {
+                        type: Number,
+                        value: 0,
+                        observer: "_onLoadingCountChanged"
+                    },
+
+                    /**
+                     * Determines if deselect is allowed
+                     */
+                    allowDeselect: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    /**
+                     * Set to true to disable the floating label.
+                     */
+                    noLabelFloat: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    /**
+                     * Set to true to always float the label.
+                     */
+                    alwaysLabelFloat: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    /**
+                     * Set to true to disable animations when opening and closing the
+                     * dropdown.
+                     */
+                    noAnimations: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    /**
+                     * The orientation against which to align the menu dropdown
+                     * horizontally relative to the dropdown trigger.
+                     */
+                    horizontalAlign: {
+                        type: String,
+                        value: 'right'
+                    },
+
+                    /**
+                     * The orientation against which to align the menu dropdown
+                     * vertically relative to the dropdown trigger.
+                     */
+                    verticalAlign: {
+                        type: String,
+                        value: 'top'
+                    },
+                };
+            }
+
+            /**
+             * Remove style of selectedItem
+             *
+             * @param {Object} _selectedItem
+             */
+            _getSelectedItem(_selectedItem)
+            {
+                let ret = Object.assign( {}, _selectedItem );
+                ret.style = undefined;
+                return ret;
+            }
+
+            /**
+             * Handles deselect if the selected item is tapped again
+             *
+             * @param {CustomEvent} e
+             */
+            _onPaperItemTap(e)
+            {
+                let me = this;
+                if( e.model.get("item."+this.valueField) === this.selectedValue && this.allowDeselect )
+                {
+                    me.set("selected", null);
+                    me.set( "selectedValue", null );
+                    e.stopPropagation();
+                    this.$.dropdown.close();
+                }
+            }
+
+            /**
+             * Determines if there is currently an active call
+             *
+             * @param {Number} newValue
+             * @param {Number} oldValue
+             */
+            _onLoadingCountChanged(newValue, oldValue)
+            {
+                this._loading = newValue !== 0;
+            }
+
+            /**
+             * loads the first page
+             *
+             * @param {CustomEvent} e
+             * @private
+             */
+            firstPage(e) {
+                e.stopPropagation();
+                this.page = 1;
+            }
+
+            /**
+             * loads the last page
+             *
+             * @param {CustomEvent} e
+             * @private
+             */
+            lastPage(e) {
+                e.stopPropagation();
+                this.page = Math.max(1, Math.ceil(this.totalItems / this.itemsPerPage));
+            }
+
+            /**
+             * loads the next page
+             *
+             * @param {CustomEvent} e
+             * @private
+             */
+            nextPage(e) {
+                e.stopPropagation();
+                this.page = Math.max(1, Math.min(this.page + 1, Math.ceil(this.totalItems / this.itemsPerPage)));
+            }
+
+            /**
+             * loads the previous page
+             *
+             * @param {CustomEvent} e
+             * @private
+             */
+            previousPage(e) {
+                e.stopPropagation();
+                this.page = Math.max(1, this.page - 1);
+            }
+
+            /**
+             * Triggers reload on page change
+             *
+             * @param {Number} newValue
+             * @param {Number} oldValue
+             * @private
+             */
+            onPageChanged( newValue, oldValue )
+            {
+                if( !oldValue )
+                {
+                    return;
+                }
+                this.load();
+            }
+
+            /**
+             * takes the given object and creates an http query string from it
+             * usage: let str = _serialize({foo: 'bar', baz: ['a', 'b']}); => 'foo=bar&baz[0]=a&baz[1]=b'
+             *
+             * @param {Object} obj the object to serialize
+             * @param {String} prefix internal only (used in recursive calls for nested objects)
+             * @returns {String}
+             * @private
+             */
+            _serialize(obj, prefix) {
+                var str = [], p;
+                for(p in obj) {
+                    if (obj.hasOwnProperty(p)) {
+                        var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
+                        str.push((v !== null && typeof v === "object") ?
+                            this._serialize(v, k) :
+                            encodeURIComponent(k) + "=" + encodeURIComponent(v));
+                    }
+                }
+                return str.join("&");
+            }
+
+            /**
+             * Determines wether paging is on or off
+             *
+             * @param {String} newValue number of items per page
+             * @private
+             */
+            _onItemsPerPageChanged(newValue)
+            {
+                if(newValue > 0)
+                {
+                    this._paged = true;
+                }
+                else
+                {
+                    this._paged = false;
+                }
+                //@todo check if page is still valid
+                if( this.autoLoad )
+                {
+                    this.load();
+                }
+            }
+
+            /**
+             * Called when remote is changed
+             *
+             * @param {String} newValue
+             * @private
+             */
+            _onRemoteChanged(newValue)
+            {
+                if( newValue !== "" && this.autoLoad )
+                {
+                    this.load();
+                }
+            }
+
+            /**
+             * reload when params have been changed
+             *
+             * @param {Object} newValue
+             * @private
+             */
+            _onParamsChanged( newValue )
+            {
+                this._selectedItem = null;
+                if( this.autoLoad )
+                    this.load();
+            }
+
+            /**
+             * Trigger load data
+             * Debounces because of quasi simultaneously changed values of itemsPerPaged and param for example or multiple page changes
+             */
+            load()
+            {
+                let me = this;
+                this._debouncer = Polymer.Debouncer.debounce(this._debouncer,
+                    Polymer.Async.timeOut.after(300),
+                    () => { me._load() });
+            }
+
+            /**
+             * Loads the data from remote
+             * @private
+             */
+            _load()
+            {
+
+                if( this.remote === "" ) //Of course only with remote set
+                {
+                    return;
+                }
+                let me = this;
+                //Lets build our request
+                let request = Object.assign({},this.params);
+                if( this.searchValue !== "" && this.remoteSearch ) {
+                    request.fields = [this.valueField, this.displayField];
+                    request.query = this.searchValue;
+                }
+
+                if( this._paged )
+                {
+                    request.start = (this.page-1)*this.itemsPerPage;
+                    request.limit = this.itemsPerPage;
+                }
+
+                ++this._loadingCount; //We need this for loading overlay
+
+                fetch(this.remote, {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    body: this._serialize( request )
+                }).then( function(response){
+                    return response.json()
+                } ).then( function(json){
+                    me.set("items", Polymer.Path.get(json,me.remotePathData));
+                    if( me._paged )
+                    {
+                        me.totalItems = Polymer.Path.get(json, me.totalItemsField);
+                    }
+                    --me._loadingCount;
+                } ).catch( function(error){
+                    --me._loadingCount;
+                    console.error("Error loading data", error);
+                } );
+            }
+
+            /**
+             * Observer of items
+             * We will apply the search to the new data if we have no remote search
+             * and select the correct item if the old item is still there
+             * if we have remote search we will insert the selected item at the beginning if it is not seen after search
+             *
+             * @param {Array} newValue
+             * @param {Array} oldValue
+             * @private
+             */
+            onItemsChange( newValue, oldValue )
+            {
+
+                if( !this.items )
+                {
+                    return;
+                }
+
+                let me = this;
+
+                let found = false;
+
+                //Do the local search
+                if( this.remote.length === 0 || this.remoteSearch === false )
+                {
+                    this._doSearch( this.searchValue );
+                }
+                //No lets reconstruct the selected variable
+                for(let i=0;i<this.items.length;i++)
+                {
+                    if( Polymer.Path.get( this.items[i], this.valueField ) === this.selectedValue )
+                    {
+                        if( !this.searchable )
+                        {
+                            if( this.selected !== i )
+                            {
+//                                window.setTimeout( function()  {me.selected = i;me.$.dropdown.open();});
+                                me.selected = i;me.$.dropdown.open();
+                            }
+                        }
+                        else
+                        {
+                            if( this.selected !== i+1 ) //If searchable we have the search as first item
+                            {
+//                                window.setTimeout( function()  {me.selected = i+1;me.$.dropdown.open();});
+                                me.selected = i+1;me.$.dropdown.open();
+                            }
+                        }
+                        found = true;
+                        break;
+                    }
+                }
+
+                //We could not restore the selected value
+                if( !found )
+                {
+                    console.warn("not found");
+                    console.log(me._selectedItem);
+                    //We are doing remote search => lets insert the selected item at the beginning; or items is not there because of paging
+                    if( ( this.searchValue.length > 0 || this._paged )&& this._selectedItem && this.remote.length > 0 )
+                    {
+                        this.unshift( "items", this._selectedItem );
+                        if( this.searchable )
+                        {
+//                            window.setTimeout( function()  {me.selected = 1;me.$.dropdown.open();});
+                            me.selected = 1;me.$.dropdown.open();
+                        }
+                        else
+                        {
+//                            window.setTimeout( function()  {me.selected = 0;me.$.dropdown.open();});
+                            me.selected = 0;me.$.dropdown.open();
+                        }
+                    }
+                    //It is local so the items really changed and our old value is gone
+                    else
+                    {
+                        me.selected = null;
+                    }
+                }
+            }
+
+            /**
+             * Returns the value to be displayed for the item
+             *
+             * @param {Object} item
+             */
+            _getDisplayValue( item )
+            {
+                if( typeof this.render === "function")
+                {
+                    return this.render(item.base);
+                }
+                return Polymer.Path.get( item.base, this.displayField );
+            }
+            /**
+             * Returns the value for the item
+             *
+             * @param {Object} item
+             */
+            _getValue( item )
+            {
+                return Polymer.Path.get( item.base, this.valueField );
+            }
+
+            /**
+             * selected values has been changed; if this happens by data binding we select the correct record
+             *
+             * @param {String} newValue
+             * @param {String} oldValue
+             * @private
+             */
+            selectedValueChanged( newValue, oldValue )
+            {
+                if( !newValue )
+                {
+                    this.selected = null;
+                }
+                let found = false;
+                for(let i=0;i<this.items.length;i++)
+                {
+                    if( Polymer.Path.get( this.items[i], this.valueField ) === newValue )
+                    {
+                        found = true;
+                        if( this.searchable )
+                        {
+                            this.selected = i+1;
+                        }
+                        else
+                        {
+                            this.selected = i;
+                        }
+                        break;
+                    }
+                }
+                if( !found )
+                {
+                    this.selectedValue = null;
+                }
+            }
+
+            /**
+             * selected row has been changed
+             * we set the correct selectedValue and _selectedItem (that we need to restore item if remote filter removed selected item)
+             *
+             * @param {Number} newValue
+             * @param {Number} oldValue
+             * @private
+             */
+            selectedChanged( newValue, oldValue )
+            {
+                let value = Number(newValue);
+                if( this.searchable )
+                {
+                    --value;
+                }
+                if( newValue === null || !this.items[value] ) {
+                    this.set("_selectedItem", null);
+                    this.set("selectedValue", null);
+                    return;
+                }
+                let item = this.items[value];
+                this.set("_selectedItem", item);
+                this.selectedValue = Polymer.Path.get( item, this.valueField );
+            }
+
+            /**
+             * Here we perform our search
+             *
+             * @param {String} pattern
+             */
+            _doSearch( pattern )
+            {
+                if( !this.items )
+                {
+                    return;
+                }
+
+
+                if( this.remote === "" || !this.remoteSearch )
+                {
+                    if( pattern.length === 0 )
+                    {
+                        for(let i=0;i<this.items.length;i++)
+                        {
+                            this.set("items."+i+".style" , "display: flex");
+                        }
+                    }
+                    else if( pattern.length > 2 )
+                    {
+                        for(let i=0;i<this.items.length;i++)
+                        {
+                            let displayValue = String(Polymer.Path.get( this.items[i], this.displayField ));
+                            let value = String(Polymer.Path.get( this.items[i], this.valueField ));
+                            if(
+                                displayValue.includes( pattern )
+                                ||
+                                value.includes( pattern )
+                            )
+                            {
+                                this.set("items."+i+".style" , "display: flex");
+                            }
+                            else
+                            {
+                                this.set("items."+i+".style" , "display: none");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    let me = this;
+                    if( pattern.length >= 3 )
+                    {
+                        this._debouncer = Polymer.Debouncer.debounce(this._debouncer,
+                            Polymer.Async.timeOut.after(300),
+                            () => { me._loadAfterSearch() });
+                    }
+                    else if( pattern.length === 0 )
+                    {
+                        me.load();
+                    }
+                }
+            }
+
+            /**
+             * Reload after search
+             */
+            _loadAfterSearch()
+            {
+                this.page = 1;
+                this.load();
+            }
+
+
+            /**
+             * Stops event propgation of selected events to avoid closing the dropdown-menu or selecting items
+             * when we dont want to do that
+             *
+             * @param {MouseEvent} e
+             */
+            _stopEventPropagation(e)
+            {
+                if ( e.type === "click" || (e.keyCode !== this.UP_KEY_CODE && e.keyCode !== this.DOWN_KEY_CODE) ) {
+                    e.stopPropagation();
+                }
+            }
+
+
+            /**
+             * checks if the user can page backwards
+             *
+             * @param {Number} page the current page
+             * @returns {Boolean}
+             * @private
+             */
+            _canPageBackward(page) {
+                return page > 1;
+            }
+
+            /**
+             * checks if the user can page forwards
+             *
+             * @param {Number} page the current page
+             * @param {Number} itemsPerPage how many items per page should be shown
+             * @param {Number} totalItems how mnay items are in the grid in total
+             * @returns {Boolean}
+             * @private
+             */
+            _canPageForward(page, itemsPerPage, totalItems) {
+                return this._getItemsTo(page, itemsPerPage, totalItems) < totalItems;
+            }
+
+            /**
+             * calculates the offset for the pagination query
+             *
+             * @param {Number} page the page to calculate the offset for
+             * @param {Number} itemsPerPage how many items per page should be shown
+             * @param {Number} totalItems number of total items
+             * @returns {Number}
+             * @private
+             */
+            _getItemsFrom(page, itemsPerPage, totalItems) {
+                return Math.min(totalItems, (page - 1) * itemsPerPage + 1);
+            }
+
+            /**
+             * returns the index of the last item on the given page
+             *
+             * @param {Number} page the pag to calculate the last index for
+             * @param {Number} itemsPerPage how many items per page should be shown
+             * @param {Number} totalItems
+             * @private
+             */
+            _getItemsTo(page, itemsPerPage, totalItems) {
+                return Math.min(page * itemsPerPage, totalItems);
+            }
+
+        }
+        customElements.define( ActindoCombobox.is, ActindoCombobox );
+    </script>
+</dom-module>
