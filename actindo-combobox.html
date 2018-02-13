@@ -218,6 +218,15 @@
                     },
 
                     /**
+                     * General value propery
+                     */
+                    value: {
+                        type: String,
+                        notify: true,
+                        observer: "valueChanged"
+                    },
+
+                    /**
                      * Contains the content of the value field of the selected item
                      */
                     selectedValue: {
@@ -429,6 +438,16 @@
                         value: 'top'
                     },
                 };
+            }
+
+            /**
+             * Set value for selected value
+             *
+             * @param {String} newValue
+             */
+            valueChanged( newValue )
+            {
+                this.set("selectedValue", newValue)
             }
 
             /**
