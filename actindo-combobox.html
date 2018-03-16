@@ -106,6 +106,7 @@
 
 
         <paper-dropdown-menu
+                required="[[required]]"
                 label="{{label}}"
                 verticalAlign="bottom"
                 id="dropdown"
@@ -115,6 +116,8 @@
                 horizontal-align="[[horizontalAlign]]"
                 vertical-align="[[verticalAlign]]"
                 disabled="[[disabled]]"
+                invalid="{{invalid}}"
+                error-message="[[errorMessage]]"
         >
             <paper-listbox slot="dropdown-content" selected="{{selected}}">
                 <template is="dom-if" if="{{searchable}}">
@@ -191,6 +194,20 @@
                         type: String
                     },
 
+                    name: {
+                        type: String
+                    },
+
+                    invalid: {
+                        type: Boolean,
+                        value: false,
+                        notify: true
+                    },
+
+                    errorMessage: {
+                        type: String
+                    },
+
                     /**
                      * Contains the row index of the selected value
                      * @private
@@ -218,12 +235,21 @@
                     },
 
                     /**
-                     * Contains the content of the value field of the selected item
+                     * General value propery
                      */
-                    selectedValue: {
+                    value: {
                         type: String,
                         notify: true,
-                        observer: "selectedValueChanged"
+                        observer: "valueChanged"
+                    },
+
+                    /**
+                     * Contains the content of the value field of the selected item
+                     */
+                    value: {
+                        type: String,
+                        notify: true,
+                        observer: "valueChanged"
                     },
 
                     /**
@@ -235,7 +261,7 @@
                     },
 
                     /**
-                     * Determines which fields is used to fill the selectedValue field
+                     * Determines which fields is used to fill the value field
                      */
                     valueField: {
                         type: String,
@@ -402,6 +428,11 @@
                         value: false
                     },
 
+                    required: {
+                        type: Boolean,
+                        value: false
+                    },
+
                     /**
                      * Set to true to disable animations when opening and closing the
                      * dropdown.
@@ -427,8 +458,18 @@
                     verticalAlign: {
                         type: String,
                         value: 'top'
-                    },
+                    }
                 };
+            }
+
+            /**
+             * Set value for selected value
+             *
+             * @param {String} newValue
+             */
+            valueChanged( newValue )
+            {
+                this.set("value", newValue)
             }
 
             /**
@@ -451,10 +492,10 @@
             _onPaperItemTap(e)
             {
                 let me = this;
-                if( e.model.get("item."+this.valueField) === this.selectedValue && this.allowDeselect )
+                if( e.model.get("item."+this.valueField) === this.value && this.allowDeselect )
                 {
                     me.set("selected", null);
-                    me.set( "selectedValue", null );
+                    me.set( "value", null );
                     e.stopPropagation();
                     this.$.dropdown.close();
                 }
@@ -502,6 +543,12 @@
             nextPage(e) {
                 e.stopPropagation();
                 this.page = Math.max(1, Math.min(this.page + 1, Math.ceil(this.totalItems / this.itemsPerPage)));
+            }
+
+            validate()
+            {
+                this.invalid = !this.$.dropdown.validate();
+                return !this.invalid;
             }
 
             /**
@@ -673,7 +720,6 @@
              */
             onItemsChange( newValue, oldValue )
             {
-
                 if( !this.items )
                 {
                     return;
@@ -691,7 +737,7 @@
                 //No lets reconstruct the selected variable
                 for(let i=0;i<this.items.length;i++)
                 {
-                    if( Polymer.Path.get( this.items[i], this.valueField ) === this.selectedValue )
+                    if( Polymer.Path.get( this.items[i], this.valueField ) === this.value )
                     {
                         if( !this.searchable )
                         {
@@ -770,38 +816,41 @@
              * @param {String} oldValue
              * @private
              */
-            selectedValueChanged( newValue, oldValue )
+            valueChanged( newValue, oldValue )
             {
                 if( !newValue )
                 {
                     this.selected = null;
                 }
                 let found = false;
-                for(let i=0;i<this.items.length;i++)
+                if( this.items )
                 {
-                    if( Polymer.Path.get( this.items[i], this.valueField ) === newValue )
+                    for(let i=0;i<this.items.length;i++)
                     {
-                        found = true;
-                        if( this.searchable )
+                        if( Polymer.Path.get( this.items[i], this.valueField ) === newValue )
                         {
-                            this.selected = i+1;
+                            found = true;
+                            if( this.searchable )
+                            {
+                                this.selected = i+1;
+                            }
+                            else
+                            {
+                                this.selected = i;
+                            }
+                            break;
                         }
-                        else
-                        {
-                            this.selected = i;
-                        }
-                        break;
                     }
                 }
                 if( !found )
                 {
-                    this.selectedValue = null;
+//                    this.value = null;
                 }
             }
 
             /**
              * selected row has been changed
-             * we set the correct selectedValue and _selectedItem (that we need to restore item if remote filter removed selected item)
+             * we set the correct value and _selectedItem (that we need to restore item if remote filter removed selected item)
              *
              * @param {Number} newValue
              * @param {Number} oldValue
@@ -816,12 +865,12 @@
                 }
                 if( newValue === null || !this.items[value] ) {
                     this.set("_selectedItem", null);
-                    this.set("selectedValue", null);
+                    this.set("value", null);
                     return;
                 }
                 let item = this.items[value];
                 this.set("_selectedItem", item);
-                this.selectedValue = Polymer.Path.get( item, this.valueField );
+                this.value = Polymer.Path.get( item, this.valueField );
             }
 
             /**
