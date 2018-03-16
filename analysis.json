@@ -13,11 +13,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 162,
+              "line": 165,
               "column": 20
             },
             "end": {
-              "line": 165,
+              "line": 168,
               "column": 21
             }
           },
@@ -33,11 +33,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 170,
+              "line": 173,
               "column": 20
             },
             "end": {
-              "line": 175,
+              "line": 178,
               "column": 21
             }
           },
@@ -56,11 +56,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 181,
+              "line": 184,
               "column": 20
             },
             "end": {
-              "line": 184,
+              "line": 187,
               "column": 21
             }
           },
@@ -76,11 +76,71 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 189,
+              "line": 192,
               "column": 20
             },
             "end": {
-              "line": 191,
+              "line": 194,
+              "column": 21
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 196,
+              "column": 20
+            },
+            "end": {
+              "line": 198,
+              "column": 21
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          }
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 200,
+              "column": 20
+            },
+            "end": {
+              "line": 204,
+              "column": 21
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "errorMessage",
+          "type": "string",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 206,
+              "column": 20
+            },
+            "end": {
+              "line": 208,
               "column": 21
             }
           },
@@ -95,11 +155,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 197,
+              "line": 214,
               "column": 20
             },
             "end": {
-              "line": 200,
+              "line": 217,
               "column": 21
             }
           },
@@ -116,11 +176,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 206,
+              "line": 223,
               "column": 20
             },
             "end": {
-              "line": 208,
+              "line": 225,
               "column": 21
             }
           },
@@ -135,11 +195,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 213,
+              "line": 230,
               "column": 20
             },
             "end": {
-              "line": 217,
+              "line": 234,
               "column": 21
             }
           },
@@ -151,24 +211,24 @@
           }
         },
         {
-          "name": "selectedValue",
+          "name": "value",
           "type": "string",
           "description": "Contains the content of the value field of the selected item",
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 222,
+              "line": 239,
               "column": 20
             },
             "end": {
-              "line": 226,
+              "line": 243,
               "column": 21
             }
           },
           "metadata": {
             "polymer": {
               "notify": true,
-              "observer": "\"selectedValueChanged\""
+              "observer": "\"valueChanged\""
             }
           }
         },
@@ -179,11 +239,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 231,
+              "line": 257,
               "column": 20
             },
             "end": {
-              "line": 234,
+              "line": 260,
               "column": 21
             }
           },
@@ -195,15 +255,15 @@
         {
           "name": "valueField",
           "type": "string",
-          "description": "Determines which fields is used to fill the selectedValue field",
+          "description": "Determines which fields is used to fill the value field",
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 239,
+              "line": 265,
               "column": 20
             },
             "end": {
-              "line": 242,
+              "line": 268,
               "column": 21
             }
           },
@@ -219,11 +279,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 247,
+              "line": 273,
               "column": 20
             },
             "end": {
-              "line": 249,
+              "line": 275,
               "column": 21
             }
           },
@@ -238,11 +298,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 254,
+              "line": 280,
               "column": 20
             },
             "end": {
-              "line": 258,
+              "line": 284,
               "column": 21
             }
           },
@@ -260,11 +320,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 263,
+              "line": 289,
               "column": 20
             },
             "end": {
-              "line": 267,
+              "line": 293,
               "column": 21
             }
           },
@@ -282,11 +342,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 272,
+              "line": 298,
               "column": 20
             },
             "end": {
-              "line": 275,
+              "line": 301,
               "column": 21
             }
           },
@@ -302,11 +362,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 280,
+              "line": 306,
               "column": 20
             },
             "end": {
-              "line": 284,
+              "line": 310,
               "column": 21
             }
           },
@@ -324,11 +384,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 289,
+              "line": 315,
               "column": 20
             },
             "end": {
-              "line": 292,
+              "line": 318,
               "column": 21
             }
           },
@@ -344,11 +404,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 297,
+              "line": 323,
               "column": 20
             },
             "end": {
-              "line": 300,
+              "line": 326,
               "column": 21
             }
           },
@@ -364,11 +424,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 305,
+              "line": 331,
               "column": 20
             },
             "end": {
-              "line": 308,
+              "line": 334,
               "column": 21
             }
           },
@@ -384,11 +444,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 313,
+              "line": 339,
               "column": 20
             },
             "end": {
-              "line": 317,
+              "line": 343,
               "column": 21
             }
           },
@@ -406,11 +466,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 323,
+              "line": 349,
               "column": 20
             },
             "end": {
-              "line": 326,
+              "line": 352,
               "column": 21
             }
           },
@@ -426,11 +486,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 331,
+              "line": 357,
               "column": 20
             },
             "end": {
-              "line": 334,
+              "line": 360,
               "column": 21
             }
           },
@@ -446,11 +506,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 339,
+              "line": 365,
               "column": 20
             },
             "end": {
-              "line": 342,
+              "line": 368,
               "column": 21
             }
           },
@@ -466,11 +526,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 347,
+              "line": 373,
               "column": 20
             },
             "end": {
-              "line": 350,
+              "line": 376,
               "column": 21
             }
           },
@@ -486,11 +546,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 355,
+              "line": 381,
               "column": 20
             },
             "end": {
-              "line": 359,
+              "line": 385,
               "column": 21
             }
           },
@@ -508,11 +568,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 365,
+              "line": 391,
               "column": 20
             },
             "end": {
-              "line": 368,
+              "line": 394,
               "column": 21
             }
           },
@@ -528,11 +588,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 374,
+              "line": 400,
               "column": 20
             },
             "end": {
-              "line": 378,
+              "line": 404,
               "column": 21
             }
           },
@@ -550,11 +610,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 383,
+              "line": 409,
               "column": 20
             },
             "end": {
-              "line": 386,
+              "line": 412,
               "column": 21
             }
           },
@@ -570,11 +630,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 391,
+              "line": 417,
               "column": 20
             },
             "end": {
-              "line": 394,
+              "line": 420,
               "column": 21
             }
           },
@@ -590,11 +650,31 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 399,
+              "line": 425,
               "column": 20
             },
             "end": {
-              "line": 402,
+              "line": 428,
+              "column": 21
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 430,
+              "column": 20
+            },
+            "end": {
+              "line": 433,
               "column": 21
             }
           },
@@ -610,11 +690,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 408,
+              "line": 439,
               "column": 20
             },
             "end": {
-              "line": 411,
+              "line": 442,
               "column": 21
             }
           },
@@ -630,11 +710,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 417,
+              "line": 448,
               "column": 20
             },
             "end": {
-              "line": 420,
+              "line": 451,
               "column": 21
             }
           },
@@ -650,11 +730,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 426,
+              "line": 457,
               "column": 20
             },
             "end": {
-              "line": 429,
+              "line": 460,
               "column": 21
             }
           },
@@ -666,16 +746,42 @@
       ],
       "methods": [
         {
+          "name": "valueChanged",
+          "description": "selected values has been changed; if this happens by data binding we select the correct record",
+          "privacy": "private",
+          "sourceRange": {
+            "start": {
+              "line": 818,
+              "column": 12
+            },
+            "end": {
+              "line": 848,
+              "column": 13
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "newValue",
+              "type": "String"
+            },
+            {
+              "name": "oldValue",
+              "type": "String"
+            }
+          ]
+        },
+        {
           "name": "_getSelectedItem",
           "description": "Remove style of selectedItem",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 438,
+              "line": 479,
               "column": 12
             },
             "end": {
-              "line": 443,
+              "line": 484,
               "column": 13
             }
           },
@@ -693,11 +799,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 450,
+              "line": 491,
               "column": 12
             },
             "end": {
-              "line": 460,
+              "line": 501,
               "column": 13
             }
           },
@@ -715,11 +821,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 468,
+              "line": 509,
               "column": 12
             },
             "end": {
-              "line": 471,
+              "line": 512,
               "column": 13
             }
           },
@@ -741,11 +847,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 479,
+              "line": 520,
               "column": 12
             },
             "end": {
-              "line": 482,
+              "line": 523,
               "column": 13
             }
           },
@@ -763,11 +869,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 490,
+              "line": 531,
               "column": 12
             },
             "end": {
-              "line": 493,
+              "line": 534,
               "column": 13
             }
           },
@@ -785,11 +891,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 501,
+              "line": 542,
               "column": 12
             },
             "end": {
-              "line": 504,
+              "line": 545,
               "column": 13
             }
           },
@@ -802,16 +908,33 @@
           ]
         },
         {
+          "name": "validate",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 547,
+              "column": 12
+            },
+            "end": {
+              "line": 551,
+              "column": 13
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
           "name": "previousPage",
           "description": "loads the previous page",
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 512,
+              "line": 559,
               "column": 12
             },
             "end": {
-              "line": 515,
+              "line": 562,
               "column": 13
             }
           },
@@ -829,11 +952,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 524,
+              "line": 571,
               "column": 12
             },
             "end": {
-              "line": 531,
+              "line": 578,
               "column": 13
             }
           },
@@ -855,11 +978,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 542,
+              "line": 589,
               "column": 12
             },
             "end": {
-              "line": 553,
+              "line": 600,
               "column": 13
             }
           },
@@ -886,11 +1009,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 561,
+              "line": 608,
               "column": 12
             },
             "end": {
-              "line": 576,
+              "line": 623,
               "column": 13
             }
           },
@@ -909,11 +1032,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 584,
+              "line": 631,
               "column": 12
             },
             "end": {
-              "line": 590,
+              "line": 637,
               "column": 13
             }
           },
@@ -931,11 +1054,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 598,
+              "line": 645,
               "column": 12
             },
             "end": {
-              "line": 603,
+              "line": 650,
               "column": 13
             }
           },
@@ -953,11 +1076,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 609,
+              "line": 656,
               "column": 12
             },
             "end": {
-              "line": 615,
+              "line": 662,
               "column": 13
             }
           },
@@ -970,11 +1093,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 621,
+              "line": 668,
               "column": 12
             },
             "end": {
-              "line": 661,
+              "line": 708,
               "column": 13
             }
           },
@@ -987,11 +1110,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 673,
+              "line": 720,
               "column": 12
             },
             "end": {
-              "line": 742,
+              "line": 786,
               "column": 13
             }
           },
@@ -1013,11 +1136,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 749,
+              "line": 793,
               "column": 12
             },
             "end": {
-              "line": 756,
+              "line": 800,
               "column": 13
             }
           },
@@ -1035,11 +1158,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 762,
+              "line": 806,
               "column": 12
             },
             "end": {
-              "line": 765,
+              "line": 809,
               "column": 13
             }
           },
@@ -1052,42 +1175,16 @@
           ]
         },
         {
-          "name": "selectedValueChanged",
-          "description": "selected values has been changed; if this happens by data binding we select the correct record",
-          "privacy": "private",
-          "sourceRange": {
-            "start": {
-              "line": 774,
-              "column": 12
-            },
-            "end": {
-              "line": 801,
-              "column": 13
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "newValue",
-              "type": "String"
-            },
-            {
-              "name": "oldValue",
-              "type": "String"
-            }
-          ]
-        },
-        {
           "name": "selectedChanged",
-          "description": "selected row has been changed\nwe set the correct selectedValue and _selectedItem (that we need to restore item if remote filter removed selected item)",
+          "description": "selected row has been changed\nwe set the correct value and _selectedItem (that we need to restore item if remote filter removed selected item)",
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 811,
+              "line": 858,
               "column": 12
             },
             "end": {
-              "line": 826,
+              "line": 873,
               "column": 13
             }
           },
@@ -1109,11 +1206,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 833,
+              "line": 880,
               "column": 12
             },
             "end": {
-              "line": 885,
+              "line": 932,
               "column": 13
             }
           },
@@ -1131,11 +1228,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 890,
+              "line": 937,
               "column": 12
             },
             "end": {
-              "line": 894,
+              "line": 941,
               "column": 13
             }
           },
@@ -1148,11 +1245,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 903,
+              "line": 950,
               "column": 12
             },
             "end": {
-              "line": 908,
+              "line": 955,
               "column": 13
             }
           },
@@ -1170,11 +1267,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 918,
+              "line": 965,
               "column": 12
             },
             "end": {
-              "line": 920,
+              "line": 967,
               "column": 13
             }
           },
@@ -1196,11 +1293,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 931,
+              "line": 978,
               "column": 12
             },
             "end": {
-              "line": 933,
+              "line": 980,
               "column": 13
             }
           },
@@ -1232,11 +1329,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 944,
+              "line": 991,
               "column": 12
             },
             "end": {
-              "line": 946,
+              "line": 993,
               "column": 13
             }
           },
@@ -1268,11 +1365,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 956,
+              "line": 1003,
               "column": 12
             },
             "end": {
-              "line": 958,
+              "line": 1005,
               "column": 13
             }
           },
@@ -1300,11 +1397,11 @@
       "metadata": {},
       "sourceRange": {
         "start": {
-          "line": 149,
+          "line": 152,
           "column": 8
         },
         "end": {
-          "line": 960,
+          "line": 1007,
           "column": 9
         }
       },
@@ -1317,11 +1414,11 @@
           "description": "set to true if combobox is disabled",
           "sourceRange": {
             "start": {
-              "line": 162,
+              "line": 165,
               "column": 20
             },
             "end": {
-              "line": 165,
+              "line": 168,
               "column": 21
             }
           },
@@ -1333,11 +1430,11 @@
           "description": "Contains all the items; filled either by remote request or if no remote is given by parameter",
           "sourceRange": {
             "start": {
-              "line": 170,
+              "line": 173,
               "column": 20
             },
             "end": {
-              "line": 175,
+              "line": 178,
               "column": 21
             }
           },
@@ -1349,11 +1446,11 @@
           "description": "Defines if the combobox is searchable",
           "sourceRange": {
             "start": {
-              "line": 181,
+              "line": 184,
               "column": 20
             },
             "end": {
-              "line": 184,
+              "line": 187,
               "column": 21
             }
           },
@@ -1365,11 +1462,59 @@
           "description": "Label of the combobox",
           "sourceRange": {
             "start": {
-              "line": 189,
+              "line": 192,
               "column": 20
             },
             "end": {
-              "line": 191,
+              "line": 194,
+              "column": 21
+            }
+          },
+          "metadata": {},
+          "type": "string"
+        },
+        {
+          "name": "name",
+          "description": "",
+          "sourceRange": {
+            "start": {
+              "line": 196,
+              "column": 20
+            },
+            "end": {
+              "line": 198,
+              "column": 21
+            }
+          },
+          "metadata": {},
+          "type": "string"
+        },
+        {
+          "name": "invalid",
+          "description": "",
+          "sourceRange": {
+            "start": {
+              "line": 200,
+              "column": 20
+            },
+            "end": {
+              "line": 204,
+              "column": 21
+            }
+          },
+          "metadata": {},
+          "type": "boolean"
+        },
+        {
+          "name": "error-message",
+          "description": "",
+          "sourceRange": {
+            "start": {
+              "line": 206,
+              "column": 20
+            },
+            "end": {
+              "line": 208,
               "column": 21
             }
           },
@@ -1381,11 +1526,11 @@
           "description": "Contains the current selected item without style attribute",
           "sourceRange": {
             "start": {
-              "line": 213,
+              "line": 230,
               "column": 20
             },
             "end": {
-              "line": 217,
+              "line": 234,
               "column": 21
             }
           },
@@ -1393,15 +1538,15 @@
           "type": "Object"
         },
         {
-          "name": "selected-value",
+          "name": "value",
           "description": "Contains the content of the value field of the selected item",
           "sourceRange": {
             "start": {
-              "line": 222,
+              "line": 239,
               "column": 20
             },
             "end": {
-              "line": 226,
+              "line": 243,
               "column": 21
             }
           },
@@ -1413,11 +1558,11 @@
           "description": "Determines which field is used to display a row",
           "sourceRange": {
             "start": {
-              "line": 231,
+              "line": 257,
               "column": 20
             },
             "end": {
-              "line": 234,
+              "line": 260,
               "column": 21
             }
           },
@@ -1426,14 +1571,14 @@
         },
         {
           "name": "value-field",
-          "description": "Determines which fields is used to fill the selectedValue field",
+          "description": "Determines which fields is used to fill the value field",
           "sourceRange": {
             "start": {
-              "line": 239,
+              "line": 265,
               "column": 20
             },
             "end": {
-              "line": 242,
+              "line": 268,
               "column": 21
             }
           },
@@ -1445,11 +1590,11 @@
           "description": "Could contain a render function that determines how the row looks like",
           "sourceRange": {
             "start": {
-              "line": 247,
+              "line": 273,
               "column": 20
             },
             "end": {
-              "line": 249,
+              "line": 275,
               "column": 21
             }
           },
@@ -1461,11 +1606,11 @@
           "description": "Contains the current search pattern",
           "sourceRange": {
             "start": {
-              "line": 254,
+              "line": 280,
               "column": 20
             },
             "end": {
-              "line": 258,
+              "line": 284,
               "column": 21
             }
           },
@@ -1477,11 +1622,11 @@
           "description": "Contains the url from where the data is obtained",
           "sourceRange": {
             "start": {
-              "line": 263,
+              "line": 289,
               "column": 20
             },
             "end": {
-              "line": 267,
+              "line": 293,
               "column": 21
             }
           },
@@ -1493,11 +1638,11 @@
           "description": "Determines if the search is done locally or remotely if a remote is set",
           "sourceRange": {
             "start": {
-              "line": 272,
+              "line": 298,
               "column": 20
             },
             "end": {
-              "line": 275,
+              "line": 301,
               "column": 21
             }
           },
@@ -1509,11 +1654,11 @@
           "description": "Params that are sent when remote data is loaded",
           "sourceRange": {
             "start": {
-              "line": 280,
+              "line": 306,
               "column": 20
             },
             "end": {
-              "line": 284,
+              "line": 310,
               "column": 21
             }
           },
@@ -1525,11 +1670,11 @@
           "description": "Determines which field of the response is contains the items",
           "sourceRange": {
             "start": {
-              "line": 289,
+              "line": 315,
               "column": 20
             },
             "end": {
-              "line": 292,
+              "line": 318,
               "column": 21
             }
           },
@@ -1541,11 +1686,11 @@
           "description": "Determines which field of the response is determines the total count items",
           "sourceRange": {
             "start": {
-              "line": 297,
+              "line": 323,
               "column": 20
             },
             "end": {
-              "line": 300,
+              "line": 326,
               "column": 21
             }
           },
@@ -1557,11 +1702,11 @@
           "description": "Determines if the box is automatically loading from remote",
           "sourceRange": {
             "start": {
-              "line": 305,
+              "line": 331,
               "column": 20
             },
             "end": {
-              "line": 308,
+              "line": 334,
               "column": 21
             }
           },
@@ -1573,11 +1718,11 @@
           "description": "Numbers of items per page",
           "sourceRange": {
             "start": {
-              "line": 313,
+              "line": 339,
               "column": 20
             },
             "end": {
-              "line": 317,
+              "line": 343,
               "column": 21
             }
           },
@@ -1589,11 +1734,11 @@
           "description": "Determine which field we use in the request to define the start of the paging",
           "sourceRange": {
             "start": {
-              "line": 331,
+              "line": 357,
               "column": 20
             },
             "end": {
-              "line": 334,
+              "line": 360,
               "column": 21
             }
           },
@@ -1605,11 +1750,11 @@
           "description": "Determines which field is used in the request to send the limit",
           "sourceRange": {
             "start": {
-              "line": 339,
+              "line": 365,
               "column": 20
             },
             "end": {
-              "line": 342,
+              "line": 368,
               "column": 21
             }
           },
@@ -1621,11 +1766,11 @@
           "description": "Information how many items would exist in total",
           "sourceRange": {
             "start": {
-              "line": 347,
+              "line": 373,
               "column": 20
             },
             "end": {
-              "line": 350,
+              "line": 376,
               "column": 21
             }
           },
@@ -1637,11 +1782,11 @@
           "description": "current page we are on",
           "sourceRange": {
             "start": {
-              "line": 355,
+              "line": 381,
               "column": 20
             },
             "end": {
-              "line": 359,
+              "line": 385,
               "column": 21
             }
           },
@@ -1653,11 +1798,11 @@
           "description": "Determines if deselect is allowed",
           "sourceRange": {
             "start": {
-              "line": 383,
+              "line": 409,
               "column": 20
             },
             "end": {
-              "line": 386,
+              "line": 412,
               "column": 21
             }
           },
@@ -1669,11 +1814,11 @@
           "description": "Set to true to disable the floating label.",
           "sourceRange": {
             "start": {
-              "line": 391,
+              "line": 417,
               "column": 20
             },
             "end": {
-              "line": 394,
+              "line": 420,
               "column": 21
             }
           },
@@ -1685,11 +1830,27 @@
           "description": "Set to true to always float the label.",
           "sourceRange": {
             "start": {
-              "line": 399,
+              "line": 425,
               "column": 20
             },
             "end": {
-              "line": 402,
+              "line": 428,
+              "column": 21
+            }
+          },
+          "metadata": {},
+          "type": "boolean"
+        },
+        {
+          "name": "required",
+          "description": "",
+          "sourceRange": {
+            "start": {
+              "line": 430,
+              "column": 20
+            },
+            "end": {
+              "line": 433,
               "column": 21
             }
           },
@@ -1701,11 +1862,11 @@
           "description": "Set to true to disable animations when opening and closing the\ndropdown.",
           "sourceRange": {
             "start": {
-              "line": 408,
+              "line": 439,
               "column": 20
             },
             "end": {
-              "line": 411,
+              "line": 442,
               "column": 21
             }
           },
@@ -1717,11 +1878,11 @@
           "description": "The orientation against which to align the menu dropdown\nhorizontally relative to the dropdown trigger.",
           "sourceRange": {
             "start": {
-              "line": 417,
+              "line": 448,
               "column": 20
             },
             "end": {
-              "line": 420,
+              "line": 451,
               "column": 21
             }
           },
@@ -1733,11 +1894,11 @@
           "description": "The orientation against which to align the menu dropdown\nvertically relative to the dropdown trigger.",
           "sourceRange": {
             "start": {
-              "line": 426,
+              "line": 457,
               "column": 20
             },
             "end": {
-              "line": 429,
+              "line": 460,
               "column": 21
             }
           },
@@ -1754,14 +1915,20 @@
         },
         {
           "type": "CustomEvent",
+          "name": "invalid-changed",
+          "description": "Fired when the `invalid` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
           "name": "selected-item-changed",
           "description": "Fired when the `selectedItem` property changes.",
           "metadata": {}
         },
         {
           "type": "CustomEvent",
-          "name": "selected-value-changed",
-          "description": "Fired when the `selectedValue` property changes.",
+          "name": "value-changed",
+          "description": "Fired when the `value` property changes.",
           "metadata": {}
         }
       ],
