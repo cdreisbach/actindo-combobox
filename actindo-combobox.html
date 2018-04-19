@@ -38,7 +38,7 @@
                     width: 100%;
                     padding: 0 0 0 1em;
                 };
-                margin-top: 1px;
+		width: 100%;
             }
 
 
@@ -65,8 +65,7 @@
 
             paper-item
             {
-                padding: 1em 0 0 1em;
-                font-size: 14px;
+                padding: 0 3em 0 1em;
                 flex-direction: column;
                 align-items: left;
                 @apply(--item-color);
@@ -74,14 +73,16 @@
 
             .list-item-description
             {
+                @apply(--font-caption);
+                opacity: 0.7;
                 padding: 0em 0em 1em 1em;
-                font-size: 10px;
                 min-width: 4em;
                 max-width: 16em;
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
                 max-height: 2em;
+                @apply(--list-item-description);
             }
 
             span:empty{
@@ -174,7 +175,7 @@
                             on-tap="_onPaperItemTap"
                             item-value="[[_getValue(item.*)]]">
 
-                            <div style="margin-top: 0.4em">
+                            <div style="margin:auto">
                                 [[_getDisplayValue(item.*)]]
                             </div>
 
