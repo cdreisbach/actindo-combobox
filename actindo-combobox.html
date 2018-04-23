@@ -31,16 +31,24 @@
                 };
             }
 
-            paper-dropdown-menu {
+            paper-dropdown-menu
+            {
                 --paper-dropdown-menu-button: {
                     left: 0;
                     width: 100%;
+                    padding: 0 0 0 1em;
                 };
                 width: 100%;
             }
-            paper-listbox {
+
+
+
+            paper-listbox
+            {
                 overflow-x: hidden;
                 position: relative;
+                @apply(--item-color);
+                @apply(--paper-listbox);
             }
 
             div.loadingContainer
@@ -55,31 +63,58 @@
                 opacity: 0.7;
             }
 
-            paper-item {
+            paper-item
+            {
                 padding: 0 3em 0 1em;
+                flex-direction: column;
+                align-items: left;
+                @apply(--item-color);
             }
+
+            .list-item-description
+            {
+                @apply(--font-caption);
+                opacity: 0.7;
+                padding: 0em 0em 1em 1em;
+                min-width: 4em;
+                max-width: 16em;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                max-height: 2em;
+                @apply(--list-item-description);
+            }
+
+            span:empty{
+                display: none;
+            }
+
             #searchBox {
                 z-index: 2;
-                box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(0, 0, 0, 0.12);
                 padding: 0 2px 0 16px;
                 border: none;
                 width: 100%;
-                height: 48px;
+                height: 38px;
                 line-height: 48px;
+                @apply(--item-color);
             }
-            #searchBox:focus {
-                outline: none;
+
+            iron-input{
+                --paper-input-container-color: white;
             }
+
             input
             {
                 @apply(--paper-font-subhead);
                 background-color: transparent;
                 border:none;
             }
+
             input:focus
             {
                 outline: none;
             }
+
             .paging {
                 align-items: center;
                 border-top: 1px solid var(--actindo-border-dark);
@@ -104,11 +139,10 @@
 
         </style>
 
-
         <paper-dropdown-menu
                 required="[[required]]"
                 label="{{label}}"
-                verticalAlign="bottom"
+                verticalAlign="[[vertialAlign]]"
                 id="dropdown"
                 no-label-float="[[noLabelFloat]]"
                 always-label-float="[[alwaysLabelFloat]]"
@@ -131,9 +165,24 @@
                         <input placeholder="Search...">
                     </iron-input>
                 </template>
-                <template is="dom-repeat" items="{{items}}" as="item">
-                    <paper-item style$="[[item.style]]" class$="paged-[[_paged]]" on-tap="_onPaperItemTap" item-value="[[_getValue(item.*)]]">[[_getDisplayValue(item.*)]]</paper-item>
+
+                <template is="dom-repeat"
+                          items="{{items}}"
+                          as="item">
+                    <paper-item
+                            style$="[[item.style]]"
+                            class$="paged-[[_paged]]"
+                            on-tap="_onPaperItemTap"
+                            item-value="[[_getValue(item.*)]]">
+
+                            <div style="margin:auto">
+                                [[_getDisplayValue(item.*)]]
+                            </div>
+
+                            <span class="list-item-description">[[_getDisplayValueDescription(item.*)]]</span>
+                    </paper-item>
                 </template>
+
                 <div class$="loadingContainer visible-[[_loading]]"></div>
                 <div class$="paging visible-[[_paged]]" style="z-index: 2" on-tap="_stopEventPropagation" on-click="_stopEventPropagation">
                     <div>
@@ -258,6 +307,13 @@
                     displayField: {
                         type: String,
                         value: "text"
+                    },
+
+                    /**
+                     * Determines greyed out Description of a row
+                     */
+                    displayFieldDescription: {
+                        type: String,
                     },
 
                     /**
@@ -440,6 +496,14 @@
                     noAnimations: {
                         type: Boolean,
                         value: false
+                    },
+
+                    /**
+                     * Wraps vertical align value of paper-dropdown-menu
+                     */
+                    verticalAlign: {
+                        type: String,
+                        value: "bottom"
                     },
 
                     /**
@@ -799,6 +863,21 @@
                 }
                 return Polymer.Path.get( item.base, this.displayField );
             }
+
+            /**
+             * Returns the value to be displayed for the item
+             *
+             * @param {Object} item
+             */
+            _getDisplayValueDescription( item )
+            {
+                if( this.displayFieldDescription )
+                {
+                    return Polymer.Path.get( item.base, this.displayFieldDescription );
+                }
+                return null;
+            }
+
             /**
              * Returns the value for the item
              *
