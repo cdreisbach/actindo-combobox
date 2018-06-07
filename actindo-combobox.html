@@ -17,7 +17,10 @@
                 background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMCcgaGVpZ2h0PSczMCc+PHBhdGggZD0nTTE5IDNINWMtMS4xMSAwLTIgLjktMiAydjE0YzAgMS4xLjg5IDIgMiAyaDE0YzEuMTEgMCAyLS45IDItMlY1YzAtMS4xLS44OS0yLTItMnptLTkgMTRsLTUtNSAxLjQxLTEuNDFMMTAgMTQuMTdsNy41OS03LjU5TDE5IDhsLTkgOXonLz48L3N2Zz4=") no-repeat;
                 background-position: 7px 12px;
             }*/
-
+            :host {
+                display: block;
+                position: relative;
+            }
             :host(.no-underline)
             {
                 --paper-input-container-underline: {
@@ -133,7 +136,6 @@
             {
                 display: none;
             }
-
         </style>
 
         <paper-dropdown-menu
@@ -150,6 +152,7 @@
                 invalid="{{invalid}}"
                 error-message="[[errorMessage]]"
         >
+            <slot name="prefix" slot="prefix"></slot>
             <paper-listbox slot="dropdown-content" selected="{{selected}}">
                 <template is="dom-if" if="{{searchable}}">
                     <iron-input
