@@ -71,6 +71,22 @@
                 @apply(--item-color);
             }
 
+            paper-item:hover
+            {
+                @apply(--item-hover)
+            }
+
+            paper-item:focus
+            {
+                @apply(--item-focused)
+            }
+
+            .list-item-display
+            {
+                margin: auto;
+                @apply(--list-item-display);
+            }
+
             .list-item-description
             {
                 @apply(--font-caption);
@@ -136,6 +152,16 @@
             {
                 display: none;
             }
+
+            .item
+            {
+                --paper-item-selected: {
+                    background-color: var(--actindo-primary);
+                };
+                --paper-item-focused: {
+                    background-color: var(--actindo-primary);
+                };
+            }
         </style>
 
         <paper-dropdown-menu
@@ -171,11 +197,12 @@
                           as="item">
                     <paper-item
                             style$="[[item.style]]"
-                            class$="paged-[[_paged]]"
+                            class$="paged-[[_paged]] item"
                             on-tap="_onPaperItemTap"
+                            label$="[[_getItemLabel(item.*)]]"
                             item-value="[[_getValue(item.*)]]">
 
-                            <div style="margin:auto">
+                            <div class="list-item-display">
                                 [[_getDisplayValue(item.*)]]
                             </div>
 
@@ -322,6 +349,14 @@
                     valueField: {
                         type: String,
                         value: "id"
+                    },
+
+                    /**
+                     * Determines which fields is used to show the combobox label
+                     */
+                    labelField: {
+                        type: String,
+                        value: "label"
                     },
 
                     /**
@@ -886,6 +921,16 @@
             _getValue( item )
             {
                 return Polymer.Path.get( item.base, this.valueField );
+            }
+
+            /**
+             * Returns the label of combobox
+             *
+             * @param {Object} item
+             */
+            _getItemLabel( item )
+            {
+                return Polymer.Path.get( item.base, this.labelField );
             }
 
             /**
