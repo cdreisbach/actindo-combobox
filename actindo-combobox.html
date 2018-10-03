@@ -594,7 +594,7 @@
                 if( e.model.get("item."+this.valueField) === this.value && this.allowDeselect )
                 {
                     me.set("selected", null);
-                    me.set( "value", null );
+                    me.set( "value", '' );
                     e.stopPropagation();
                     this.$.dropdown.close();
                 }
