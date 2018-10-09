@@ -294,7 +294,7 @@
         {
           "name": "labelField",
           "type": "string",
-          "description": "Determines which fields is used to show the label of the paper-item => value of the input after selection\nif null is also set to null",
+          "description": "Determines which fields is used to show the value displayed after selection;\nif null the value in displayField will be used",
           "privacy": "public",
           "sourceRange": {
             "start": {
@@ -1685,7 +1685,7 @@
         },
         {
           "name": "label-field",
-          "description": "Determines which fields is used to show the label of the paper-item => value of the input after selection\nif null is also set to null",
+          "description": "Determines which fields is used to show the value displayed after selection;\nif null the value in displayField will be used",
           "sourceRange": {
             "start": {
               "line": 347,
