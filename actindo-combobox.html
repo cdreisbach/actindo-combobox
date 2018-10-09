@@ -73,13 +73,11 @@
 
             paper-item:hover
             {
-                background-color: var(--actindo-primary);
                 @apply(--item-hover)
             }
 
             paper-item:focus
             {
-                background-color: var(--actindo-primary);
                 @apply(--item-focused)
             }
 
@@ -586,7 +584,7 @@
                 if( e.model.get("item."+this.valueField) === this.value && this.allowDeselect )
                 {
                     me.set("selected", null);
-                    me.set( "value", '' );
+                    me.set( "value", null );
                     e.stopPropagation();
                     this.$.dropdown.close();
                 }
