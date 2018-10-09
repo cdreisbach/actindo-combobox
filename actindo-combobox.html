@@ -342,11 +342,10 @@
                     },
 
                     /**
-                     * Determines which fields is used to show the combobox label
+                     * Determines which fields is used to show the label of the paper-item => value of the input after selection
                      */
                     labelField: {
                         type: String,
-                        value: "label"
                     },
 
                     /**
@@ -920,7 +919,11 @@
              */
             _getItemLabel( item )
             {
-                return Polymer.Path.get( item.base, this.labelField );
+                if( this.labelField )
+                {
+                    return Polymer.Path.get( item.base, this.labelField );
+                }
+                return null;
             }
 
             /**
