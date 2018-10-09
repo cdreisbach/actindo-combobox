@@ -73,11 +73,13 @@
 
             paper-item:hover
             {
+                background-color: var(--actindo-primary);
                 @apply(--item-hover)
             }
 
             paper-item:focus
             {
+                background-color: var(--actindo-primary);
                 @apply(--item-focused)
             }
 
@@ -152,16 +154,6 @@
             {
                 display: none;
             }
-
-            .item
-            {
-                --paper-item-selected: {
-                    background-color: var(--actindo-primary);
-                };
-                --paper-item-focused: {
-                    background-color: var(--actindo-primary);
-                };
-            }
         </style>
 
         <paper-dropdown-menu
@@ -197,7 +189,7 @@
                           as="item">
                     <paper-item
                             style$="[[item.style]]"
-                            class$="paged-[[_paged]] item"
+                            class$="paged-[[_paged]]"
                             on-tap="_onPaperItemTap"
                             label$="[[_getItemLabel(item.*)]]"
                             item-value="[[_getValue(item.*)]]">
