@@ -71,6 +71,22 @@
                 @apply(--item-color);
             }
 
+            paper-item:hover
+            {
+                @apply(--item-hover)
+            }
+
+            paper-item:focus
+            {
+                @apply(--item-focused)
+            }
+
+            .list-item-display
+            {
+                margin: auto;
+                @apply(--list-item-display);
+            }
+
             .list-item-description
             {
                 @apply(--font-caption);
@@ -173,9 +189,10 @@
                             style$="[[item.style]]"
                             class$="paged-[[_paged]]"
                             on-tap="_onPaperItemTap"
+                            label$="[[_getItemLabel(item.*)]]"
                             item-value="[[_getValue(item.*)]]">
 
-                            <div style="margin:auto">
+                            <div class="list-item-display">
                                 [[_getDisplayValue(item.*)]]
                             </div>
 
@@ -322,6 +339,14 @@
                     valueField: {
                         type: String,
                         value: "id"
+                    },
+
+                    /**
+                     * Determines which fields is used to show the value displayed after selection;
+                     * if null the value in displayField will be used
+                     */
+                    labelField: {
+                        type: String,
                     },
 
                     /**
@@ -886,6 +911,20 @@
             _getValue( item )
             {
                 return Polymer.Path.get( item.base, this.valueField );
+            }
+
+            /**
+             * Returns the label of combobox
+             *
+             * @param {Object} item
+             */
+            _getItemLabel( item )
+            {
+                if( this.labelField )
+                {
+                    return Polymer.Path.get( item.base, this.labelField );
+                }
+                return null;
             }
 
             /**
