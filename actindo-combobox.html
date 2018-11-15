@@ -301,15 +301,6 @@
                     },
 
                     /**
-                     * General value propery
-                     */
-                    value: {
-                        type: String,
-                        notify: true,
-                        observer: "valueChanged"
-                    },
-
-                    /**
                      * Contains the content of the value field of the selected item
                      */
                     value: {
@@ -387,7 +378,6 @@
                      */
                     params: {
                         type: Object,
-                        value: {},
                         observer: "_onParamsChanged"
                     },
 
@@ -549,16 +539,6 @@
                         value: 'top'
                     }
                 };
-            }
-
-            /**
-             * Set value for selected value
-             *
-             * @param {String} newValue
-             */
-            valueChanged( newValue )
-            {
-                this.set("value", newValue)
             }
 
             /**
@@ -734,6 +714,11 @@
              */
             _onParamsChanged( newValue )
             {
+                if (!this.remote)
+                {
+                    return;
+                }
+
                 this._selectedItem = null;
                 if( this.autoLoad )
                     this.load();
@@ -763,8 +748,9 @@
                     return;
                 }
                 let me = this;
+                const params = this.params || {};
                 //Lets build our request
-                let request = Object.assign({},this.params);
+                let request = Object.assign({}, this.params);
                 if( this.searchValue !== "" && this.remoteSearch ) {
                     request.fields = [this.valueField, this.displayField];
                     request.query = this.searchValue;
@@ -936,7 +922,7 @@
              */
             valueChanged( newValue, oldValue )
             {
-                if( !newValue )
+                if( newValue === undefined || newValue === null )
                 {
                     this.selected = null;
                 }
