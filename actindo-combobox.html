@@ -244,6 +244,11 @@
                         notify: true
                     },
 
+                    selectedValue: { /*For backward compatiblity*/
+                        type: "String",
+                        notify: true,
+                        computed: "_getSelectedValue(value)"
+                    }
 
                     /**
                      * Defines if the combobox is searchable
@@ -579,6 +584,15 @@
             _onLoadingCountChanged(newValue, oldValue)
             {
                 this._loading = newValue !== 0;
+            }
+
+            /**
+             * @private
+             * Copies value of value to selectedValue
+             */
+            _getSelectedValue(value)
+            {
+                return value;
             }
 
             /**
