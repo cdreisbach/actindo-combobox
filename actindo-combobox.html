@@ -244,6 +244,11 @@
                         notify: true
                     },
 
+                    selectedValue: { /*For backward compatiblity*/
+                        type: "String",
+                        notify: true,
+                        computed: "_getSelectedValue(value)"
+                    },
 
                     /**
                      * Defines if the combobox is searchable
@@ -298,15 +303,6 @@
                         type: Object,
                         computed: "_getSelectedItem(_selectedItem)",
                         notify: true
-                    },
-
-                    /**
-                     * General value propery
-                     */
-                    value: {
-                        type: String,
-                        notify: true,
-                        observer: "valueChanged"
                     },
 
                     /**
@@ -387,7 +383,6 @@
                      */
                     params: {
                         type: Object,
-                        value: {},
                         observer: "_onParamsChanged"
                     },
 
@@ -552,16 +547,6 @@
             }
 
             /**
-             * Set value for selected value
-             *
-             * @param {String} newValue
-             */
-            valueChanged( newValue )
-            {
-                this.set("value", newValue)
-            }
-
-            /**
              * Remove style of selectedItem
              *
              * @param {Object} _selectedItem
@@ -599,6 +584,15 @@
             _onLoadingCountChanged(newValue, oldValue)
             {
                 this._loading = newValue !== 0;
+            }
+
+            /**
+             * @private
+             * Copies value of value to selectedValue
+             */
+            _getSelectedValue(value)
+            {
+                return value;
             }
 
             /**
@@ -734,6 +728,11 @@
              */
             _onParamsChanged( newValue )
             {
+                if (!this.remote)
+                {
+                    return;
+                }
+
                 this._selectedItem = null;
                 if( this.autoLoad )
                     this.load();
@@ -763,8 +762,9 @@
                     return;
                 }
                 let me = this;
+                const params = this.params || {};
                 //Lets build our request
-                let request = Object.assign({},this.params);
+                let request = Object.assign({}, this.params);
                 if( this.searchValue !== "" && this.remoteSearch ) {
                     request.fields = [this.valueField, this.displayField];
                     request.query = this.searchValue;
@@ -936,7 +936,7 @@
              */
             valueChanged( newValue, oldValue )
             {
-                if( !newValue )
+                if( newValue === undefined || newValue === null )
                 {
                     this.selected = null;
                 }

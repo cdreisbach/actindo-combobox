@@ -10,7 +10,7 @@
             items="[[items]]"
             display-field="value"
             value-field="key"
-            selected-value="{{selectedValue}}"
+            value="{{selectedValue}}"
             selected-item="{{selectedItem}}"
             searchable
             allow-deselect
@@ -67,7 +67,7 @@ When setting *remote* the combobox will load the data from remote supporting pag
             params="[[params]]"
             display-field="value"
             value-field="key"
-            selected-value="{{selectedValue}}"
+            value="{{selectedValue}}"
             selected-item="{{selectedItem}}"
             items-per-page="25"
             remote-search
