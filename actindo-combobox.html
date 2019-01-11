@@ -4,6 +4,8 @@
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../polymer/lib/utils/debounce.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="actindo-dropdown-menu.html">
+<link rel="import" href="actindo-dropdown-trigger-multi.html">
 <dom-module id="actindo-combobox">
     <template>
         <style>
@@ -47,6 +49,7 @@
             {
                 overflow-x: hidden;
                 position: relative;
+
                 @apply(--item-color);
                 @apply(--paper-listbox);
             }
@@ -152,24 +155,45 @@
             {
                 display: none;
             }
+            .dropdown-trigger.multi
+            {
+                background-color: var(--primary-background-color);
+            }
         </style>
 
-        <paper-dropdown-menu
+        <actindo-dropdown-menu
                 required="[[required]]"
                 label="{{label}}"
-                verticalAlign="[[vertialAlign]]"
                 id="dropdown"
+                multi="[[multi]]"
                 no-label-float="[[noLabelFloat]]"
                 always-label-float="[[alwaysLabelFloat]]"
                 no-animations="[[noAnimations]]"
                 horizontal-align="[[horizontalAlign]]"
                 vertical-align="[[verticalAlign]]"
+                vertical-offset="[[verticalOffset]]"
                 disabled="[[disabled]]"
                 invalid="{{invalid}}"
                 error-message="[[errorMessage]]"
         >
             <slot name="prefix" slot="prefix"></slot>
-            <paper-listbox slot="dropdown-content" selected="{{selected}}">
+            <template is="dom-if" if="[[multi]]">
+                <actindo-dropdown-trigger-multi
+                    slot="dropdown-trigger"
+                    class="dropdown-trigger multi"
+                    value="[[selectedItems]]"
+                    display-field="[[displayField]]"
+                    selected-values="{{selectedValues}}"
+                >
+
+                </actindo-dropdown-trigger-multi>
+            </template>
+            <paper-listbox
+                slot="dropdown-content"
+                selected="{{selected}}"
+                selected-values="{{selectedValues}}"
+                multi="[[multi]]"
+            >
                 <template is="dom-if" if="{{searchable}}">
                     <iron-input
                             id="searchBox"
@@ -213,7 +237,7 @@
                     </div>
                 </div>
             </paper-listbox>
-        </paper-dropdown-menu>
+        </actindo-dropdown-menu>
     </template>
     <script>
         class ActindoCombobox extends Polymer.Element {
@@ -309,7 +333,7 @@
                      * Contains the content of the value field of the selected item
                      */
                     value: {
-                        type: String,
+                        type: String | Array,
                         notify: true,
                         observer: "valueChanged"
                     },
@@ -523,7 +547,12 @@
                      */
                     verticalAlign: {
                         type: String,
-                        value: "bottom"
+                        value: "top"
+                    },
+
+                    verticalOffset: {
+                        type: Number,
+                        value: 62
                     },
 
                     /**
@@ -535,15 +564,46 @@
                         value: 'right'
                     },
 
-                    /**
-                     * The orientation against which to align the menu dropdown
-                     * vertically relative to the dropdown trigger.
-                     */
-                    verticalAlign: {
-                        type: String,
-                        value: 'top'
+                    multi : {
+                        type: Boolean,
+                        value: true
+                    },
+
+                    selectedValues: {
+                        type: Array,
+                        value: function(){ return [] },
+                    },
+
+                    selectedItems: {
+                        type: Array,
+                        value: function(){ return [] }
                     }
+
                 };
+            }
+            static get observers()
+            {
+                return [
+                    'updateValue(selectedValues.splices)',
+                ]
+            }
+
+            updateValue(data)
+            {
+                if (!data || !data.indexSplices)
+                {
+                    return;
+                }
+                const event = data.indexSplices[0];
+                const selectedItems = event.object.map(idx => this.items[idx-1]);
+                const value = selectedItems.map(item => {
+                    return Polymer.Path.get( item, this.valueField )
+                });
+
+                this.setProperties({
+                    value: value,
+                    selectedItems: selectedItems
+                })
             }
 
             /**
@@ -935,6 +995,16 @@
              * @private
              */
             valueChanged( newValue, oldValue )
+            {
+                if (this.multi)
+                {
+                    return;
+                }
+                this._handleValueChangedSingleSelection(newValue, oldValue);
+
+            }
+
+            _handleValueChangedSingleSelection(newValue, oldValue)
             {
                 if( newValue === undefined || newValue === null )
                 {
