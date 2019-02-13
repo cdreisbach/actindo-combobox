@@ -59,9 +59,6 @@ respectively.
   <template>
     <style include="paper-dropdown-menu-shared-styles">
         paper-menu-button[multi] {
-            --paper-menu-button-dropdown: {
-                 position: absolute !important;
-            };
             --paper-menu-button-content: {
                 top: 2px;
                 max-width: unset;
@@ -382,6 +379,10 @@ respectively.
         },
         _openedChanged: function() {
           var openState = this.opened ? 'true' : 'false';
+          if (openState) {
+            const parentWidth = this.$.menuButton.offsetWidth;
+            this.$.menuButton.$.dropdown.style.width = `${parentWidth}px`;
+          }
           var e = this.contentElement;
           if (e) {
             e.setAttribute('aria-expanded', openState);

@@ -22,6 +22,9 @@
             :host {
                 display: block;
                 position: relative;
+                --item-color: {
+                    background-color: white;
+                };
             }
             :host(.no-underline)
             {
@@ -36,7 +39,7 @@
                 };
             }
 
-            paper-dropdown-menu
+            actindo-dropdown-menu
             {
                 --paper-dropdown-menu-button: {
                     left: 0;
@@ -49,9 +52,14 @@
             {
                 overflow-x: hidden;
                 position: relative;
-
+                padding: 0;
                 @apply(--item-color);
                 @apply(--paper-listbox);
+            }
+
+            paper-listbox > paper-item
+            {
+                border-top: 1px solid var(--actindo-border-light);
             }
 
             div.loadingContainer
@@ -69,8 +77,6 @@
             paper-item
             {
                 padding: 0 3em 0 1em;
-                flex-direction: column;
-                align-items: left;
                 @apply(--item-color);
             }
 
@@ -86,7 +92,7 @@
 
             .list-item-display
             {
-                margin: auto;
+                margin: auto 0;
                 @apply(--list-item-display);
             }
 
@@ -111,10 +117,9 @@
             #searchBox {
                 z-index: 2;
                 padding: 0 2px 0 16px;
-                border: none;
                 width: 100%;
-                height: 38px;
                 line-height: 48px;
+                outline: none;
                 @apply(--item-color);
             }
 
@@ -184,6 +189,15 @@
                     value="[[selectedItems]]"
                     display-field="[[displayField]]"
                     selected-values="{{selectedValues}}"
+                    invalid="[[invalid]]"
+                    readonly
+                    disabled="[[disabled]]"
+                    value="[[selectedItemLabel]]"
+                    label="[[label]]"
+                    placeholder="[[placeholder]]"
+                    error-message="[[errorMessage]]"
+                    always-float-label="[[alwaysFloatLabel]]"
+                    no-label-float="[[noLabelFloat]]"
                 >
 
                 </actindo-dropdown-trigger-multi>
@@ -564,9 +578,9 @@
                         value: 'right'
                     },
 
-                    multi : {
+                    multi: {
                         type: Boolean,
-                        value: true
+                        value: false
                     },
 
                     selectedValues: {

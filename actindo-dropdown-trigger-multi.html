@@ -26,6 +26,10 @@
                 flex-wrap: wrap;
                 min-width: 50px;
             }
+            .container.has-value-true
+            {
+                margin-top: 10px;
+            }
             iron-input
             {
                 visibility: hidden;
@@ -34,7 +38,7 @@
         </style>
         <paper-input-container always-float-label="[[_computeAlwaysFloatLabel(value.length)]]">
             <label hidden$="[[_computeLabelVisibility(label)]]" aria-hidden="true" for="input"  slot="label">[[label]]</label>
-            <div slot="input" class="container">
+            <div slot="input" class$="container has-value-[[hasValue]]">
                 <template is="dom-repeat" items="{{value}}" as="item">
                     <actindo-combobox-chip
                         active="{{active}}"
@@ -49,8 +53,13 @@
         </paper-input-container>
     </template>
     <script>
-        class ActindoDropdownTriggerMulti extends Polymer.Element {
-            static get is() { return 'actindo-dropdown-trigger-multi'; }
+        class ActindoDropdownTriggerMulti extends
+            Polymer.mixinBehaviors(Polymer.IronA11yKeysBehavior,
+                            Polymer.mixinBehaviors(Polymer.PaperInputBehavior, Polymer.Element)) {
+
+            static get is() {
+                return 'actindo-dropdown-trigger-multi';
+            }
             static get properties() {
                 return {
                     name: {
@@ -76,8 +85,18 @@
                     displayField: {
                         type: String,
                         value: "text"
+                    },
+
+                    hasValue: {
+                        type: Boolean,
+                        computed: '_getHasValue(value.*)'
                     }
                 }
+            }
+            _getHasValue(value)
+            {
+                value = value.base;
+                return value.length > 0;
             }
             _remove(e)
             {
@@ -88,8 +107,8 @@
             {
                  return !label;
             }
-            _computeAlwaysFloatLabel(len) {
-                return len > 0
+            _computeAlwaysFloatLabel(alwaysFloatLabel, len) {
+                return alwaysFloatLabel || len > 0
             }
             _getDisplayValue( item )
             {
