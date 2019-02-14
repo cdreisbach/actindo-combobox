@@ -1014,10 +1014,39 @@
             {
                 if (this.multi)
                 {
+                    this._handleValueChangedMultiSelection(newValue, oldValue);
                     return;
                 }
                 this._handleValueChangedSingleSelection(newValue, oldValue);
 
+            }
+
+            _handleValueChangedMultiSelection(newValue, oldValue)
+            {
+                if( newValue === undefined || newValue === null )
+                {
+                    this.selectedValues = [];
+                }
+                 if( this.items )
+                {
+                    const selected = [];
+                    for(let i=0;i<this.items.length;i++)
+                    {
+                        const value = Polymer.Path.get( this.items[i], this.valueField );
+                        if( newValue.includes(value) )
+                        {
+                            if( this.searchable )
+                            {
+                                selected.push(i+1);
+                            }
+                            else
+                            {
+                                selected.push(i);
+                            }
+                        }
+                    }
+                    this.selectedValues = selected;
+                }
             }
 
             _handleValueChangedSingleSelection(newValue, oldValue)
