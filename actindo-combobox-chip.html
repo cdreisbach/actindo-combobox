@@ -1,0 +1,85 @@
+
+<dom-module id="actindo-combobox-chip">
+    <template>
+        <style>
+            .container
+            {
+                vertical-align: top;
+                outline: none;
+                cursor: default;
+                overflow: visible;
+                background-color: var(--actindo-light-grey);
+                position: relative;
+                box-sizing: border-box;
+                height: 24px;
+                display: flex;
+                align-items: center;
+                border-radius: 4px;
+                margin: 0 4px 4px 0;
+                padding-left: 10px;
+                padding-top: 2px;
+                padding-bottom: 1px;
+                border: 1px solid var(--actindo-border-light);
+                @apply(--chip-container);
+            }
+            .content
+            {
+                font-size: var(--paper-font-body2_-_font-size);
+                font-weight: var(--paper-font-body2_-_font-weight);
+                color: var(--actindo-secondary);
+                @apply(--chip-content);
+            }
+            .content,
+            .remove-icon
+            {
+                opacity: 0.5;
+            }
+            .remove-icon
+            {
+                width: 30px;
+                height: 30px;
+            }
+        </style>
+        <div class="container" id="container" on-remove="_remove">
+            <div class="content">
+                <slot></slot>
+            </div>
+
+            <paper-icon-button on-click="_remove" class="remove-icon" icon="icons:close"></paper-icon-button>
+        </div>
+    </template>
+
+    <script>
+        class ActindoComboboxChip extends Polymer.Element {
+            static get is() { return 'actindo-combobox-chip'; }
+            static get properties() {
+                return {
+                    /**
+                     * identification for this tag
+                     */
+                    id: {
+                        type: String,
+                        value: ''
+                    }
+                };
+            }
+            /**
+             *  Call when user click on the close icon
+             */
+            _remove(e)
+            {
+                e.stopPropagation();
+
+                const detail = {};
+                if(this.id)
+                {
+                    detail.id = this.id
+                }
+                const evt = new CustomEvent("remove", { cancelable: true, detail: detail})
+                this.dispatchEvent(evt)
+
+            }
+        }
+        customElements.define(ActindoComboboxChip.is, ActindoComboboxChip);
+    </script>
+</dom-module>

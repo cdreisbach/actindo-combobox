@@ -1,0 +1,125 @@
+<link rel="import" href="actindo-combobox-chip.html">
+
+<dom-module id="actindo-dropdown-trigger-multi">
+    <template>
+        <style>
+            input {
+                position: relative; /* to make a stacking context */
+                outline: none;
+                box-shadow: none;
+                padding: 0;
+                width: 100%;
+                max-width: 100%;
+                background: transparent;
+                border: none;
+                color: var(--paper-input-container-input-color, var(--primary-text-color));
+                -webkit-appearance: none;
+                text-align: inherit;
+                vertical-align: bottom;
+                min-width: 0;
+                line-height: 32px;
+                @apply(--font-body);
+            }
+            .container
+            {
+                display: flex;
+                flex-wrap: wrap;
+                min-width: 50px;
+            }
+            iron-input
+            {
+                visibility: hidden;
+                width: 0;
+            }
+            .chip {
+                position: relative;
+                top: 5px;
+            }
+        </style>
+        <paper-input-container always-float-label="[[_computeAlwaysFloatLabel(value.length)]]">
+            <label hidden$="[[_computeLabelVisibility(label)]]" aria-hidden="true" for="input"  slot="label">[[label]]</label>
+            <div slot="input" class$="container has-value-[[hasValue]]">
+                <template is="dom-repeat" items="{{value}}" as="item">
+                    <actindo-combobox-chip
+                        active="{{active}}"
+                        on-remove="_remove"
+                        class="chip"
+                    >[[_getDisplayValue(item.*)]]</actindo-combobox-chip>
+                </template>
+                <iron-input id="input">
+                    <input id="nativeInput" placeholder="">
+                </iron-input>
+            </div>
+        </paper-input-container>
+    </template>
+    <script>
+        class ActindoDropdownTriggerMulti extends
+            Polymer.mixinBehaviors(Polymer.IronA11yKeysBehavior,
+                            Polymer.mixinBehaviors(Polymer.PaperInputBehavior, Polymer.Element)) {
+
+            static get is() {
+                return 'actindo-dropdown-trigger-multi';
+            }
+            static get properties() {
+                return {
+                    name: {
+                        type: String
+                    },
+                    value: {
+                        type: Array,
+                        notify: true,
+                        value: function() {
+                            return [];
+                        }
+                    },
+                    selectedValues: {
+                        type: Array,
+                        notify: true,
+                        value: function() {
+                            return [];
+                        }
+                    },
+                    /**
+                     * Determines which field is used to display a row
+                     */
+                    displayField: {
+                        type: String,
+                        value: "text"
+                    },
+
+                    hasValue: {
+                        type: Boolean,
+                        computed: '_getHasValue(value.*)'
+                    }
+                }
+            }
+            _getHasValue(value)
+            {
+                value = value.base;
+                return value.length > 0;
+            }
+            _remove(e)
+            {
+                this.splice('value', e.model.index, 1);
+                this.splice('selectedValues', e.model.index, 1);
+            }
+            _computeLabelVisibility(label)
+            {
+                 return !label;
+            }
+            _computeAlwaysFloatLabel(alwaysFloatLabel, len) {
+                return alwaysFloatLabel || len > 0
+            }
+            _getDisplayValue( item )
+            {
+                if( typeof this.render === "function")
+                {
+                    return this.render(item.base);
+                }
+                return Polymer.Path.get( item.base, this.displayField );
+            }
+
+        }
+        customElements.define(ActindoDropdownTriggerMulti.is, ActindoDropdownTriggerMulti);
+    </script>
+</dom-module>
