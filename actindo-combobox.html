@@ -9,16 +9,15 @@
 <dom-module id="actindo-combobox">
     <template>
         <style>
-
-            /*:host([multi]) paper-item {
-                background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMCcgaGVpZ2h0PSczMCc+PHBhdGggZD0nTTE5IDV2MTRINVY1aDE0bTAtMkg1Yy0xLjEgMC0yIC45LTIgMnYxNGMwIDEuMS45IDIgMiAyaDE0YzEuMSAwIDItLjkgMi0yVjVjMC0xLjEtLjktMi0yLTJ6Jy8+PC9zdmc+") no-repeat;
-                background-position: 7px 12px;
-                padding-left: 40px;
+            :host([multi]) paper-item.iron-selected {
+                background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDB6Ii8+PHBhdGggZmlsbD0iIzk5OSIgZD0iTTkgMTYuMkw0LjggMTJsLTEuNCAxLjRMOSAxOSAyMSA3bC0xLjQtMS40TDkgMTYuMnoiLz48L3N2Zz4=");
+                background-repeat: no-repeat;
+                background-position: 99% 50%;
+                font-weight: normal;
             }
             :host([multi]) paper-item.iron-selected {
-                background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMCcgaGVpZ2h0PSczMCc+PHBhdGggZD0nTTE5IDNINWMtMS4xMSAwLTIgLjktMiAydjE0YzAgMS4xLjg5IDIgMiAyaDE0YzEuMTEgMCAyLS45IDItMlY1YzAtMS4xLS44OS0yLTItMnptLTkgMTRsLTUtNSAxLjQxLTEuNDFMMTAgMTQuMTdsNy41OS03LjU5TDE5IDhsLTkgOXonLz48L3N2Zz4=") no-repeat;
-                background-position: 7px 12px;
-            }*/
+            }
+
             :host {
                 display: block;
                 position: relative;
@@ -85,9 +84,9 @@
                 @apply(--item-hover)
             }
 
-            paper-item:focus
-            {
-                @apply(--item-focused)
+            paper-item:focus,
+            paper-item[focused] {
+                @apply(--item-focused);
             }
 
             .list-item-display
@@ -115,12 +114,16 @@
             }
 
             #searchBox {
-                z-index: 2;
-                padding: 0 2px 0 16px;
+                display: block;
                 width: 100%;
-                line-height: 48px;
-                outline: none;
                 @apply(--item-color);
+            }
+            #searchBox input {
+                box-sizing: border-box;
+                display: block;
+                line-height: 48px;
+                padding: 0 16px;
+                width: 100%;
             }
 
             iron-input{

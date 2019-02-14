@@ -26,14 +26,14 @@
                 flex-wrap: wrap;
                 min-width: 50px;
             }
-            .container.has-value-true
-            {
-                margin-top: 10px;
-            }
             iron-input
             {
                 visibility: hidden;
                 width: 0;
+            }
+            .chip {
+                position: relative;
+                top: 5px;
             }
         </style>
         <paper-input-container always-float-label="[[_computeAlwaysFloatLabel(value.length)]]">

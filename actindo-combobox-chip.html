@@ -66,8 +66,10 @@
             /**
              *  Call when user click on the close icon
              */
-            _remove()
+            _remove(e)
             {
+                e.stopPropagation();
+
                 const detail = {};
                 if(this.id)
                 {
