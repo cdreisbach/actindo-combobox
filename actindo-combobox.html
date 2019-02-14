@@ -206,6 +206,7 @@
                 slot="dropdown-content"
                 selected="{{selected}}"
                 selected-values="{{selectedValues}}"
+                selected-items="{{selectedNodes}}"
                 multi="[[multi]]"
             >
                 <template is="dom-if" if="{{searchable}}">
@@ -228,8 +229,8 @@
                             class$="paged-[[_paged]]"
                             on-tap="_onPaperItemTap"
                             label$="[[_getItemLabel(item.*)]]"
-                            item-value="[[_getValue(item.*)]]">
-
+                            item-value="[[_getValue(item.*)]]"
+                            item="[[item]]">
                             <div class="list-item-display">
                                 [[_getDisplayValue(item.*)]]
                             </div>
@@ -270,6 +271,11 @@
                     disabled: {
                         type: Boolean,
                         value: false
+                    },
+                    selectedNodes: {
+                        type: Node,
+                        value: function() {return [];},
+                        observer: "_onSelectedNodesChanged",
                     },
 
                     /**
@@ -577,12 +583,15 @@
                         type: String,
                         value: 'right'
                     },
-
+                    
+                    /**
+                     * Determines if the box is multi select
+                     */
                     multi: {
                         type: Boolean,
                         value: false
                     },
-
+                    
                     selectedValues: {
                         type: Array,
                         value: function(){ return [] },
@@ -595,21 +604,14 @@
 
                 };
             }
-            static get observers()
+            /**
+             * Determines wether selectedNodes changed
+             *
+             * @private
+             */
+            _onSelectedNodesChanged(selectedNodes)
             {
-                return [
-                    'updateValue(selectedValues.splices)',
-                ]
-            }
-
-            updateValue(data)
-            {
-                if (!data || !data.indexSplices)
-                {
-                    return;
-                }
-                const event = data.indexSplices[0];
-                const selectedItems = event.object.map(idx => this.items[idx-1]);
+                const selectedItems = selectedNodes.map(node => node.item);
                 const value = selectedItems.map(item => {
                     return Polymer.Path.get( item, this.valueField )
                 });
