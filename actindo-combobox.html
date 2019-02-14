@@ -870,6 +870,10 @@
                         me.totalItems = Polymer.Path.get(json, me.totalItemsField);
                     }
                     --me._loadingCount;
+                    if(me.multi)
+                    {
+                        me._handleValueChangedMultiSelection(me.value);
+                    }
                 } ).catch( function(error){
                     --me._loadingCount;
                     console.error("Error loading data", error);
@@ -1026,6 +1030,11 @@
 
             _handleValueChangedMultiSelection(newValue, oldValue)
             {
+                if(Array.isArray(newValue) && newValue.length === 1 && !newValue[0])
+                {
+                    return;
+                }
+
                 if( newValue === undefined || newValue === null )
                 {
                     this.selectedValues = [];
