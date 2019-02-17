@@ -183,6 +183,7 @@
         </style>
 
         <actindo-dropdown-menu
+                vertical-offset="[[verticalOffset]]"
                 required="[[required]]"
                 label="{{label}}"
                 verticalAlign="[[vertialAlign]]"
@@ -253,6 +254,10 @@
             {
                 return {
 
+                    verticalOffset: {
+                        type: Number,
+                        value: 55
+                    },
 
                     /**
                      * set to true if combobox is disabled
