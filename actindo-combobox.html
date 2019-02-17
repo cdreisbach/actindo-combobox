@@ -5,19 +5,16 @@
 <link rel="import" href="../polymer/lib/utils/debounce.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="actindo-dropdown-menu.html">
-<link rel="import" href="actindo-dropdown-trigger-multi.html">
 <dom-module id="actindo-combobox">
     <template>
         <style>
+
             :host([multi]) paper-item.iron-selected {
                 background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDB6Ii8+PHBhdGggZmlsbD0iIzk5OSIgZD0iTTkgMTYuMkw0LjggMTJsLTEuNCAxLjRMOSAxOSAyMSA3bC0xLjQtMS40TDkgMTYuMnoiLz48L3N2Zz4=");
                 background-repeat: no-repeat;
                 background-position: 99% 50%;
                 font-weight: normal;
             }
-            :host([multi]) paper-item.iron-selected {
-            }
-
             :host {
                 display: block;
                 position: relative;
@@ -38,7 +35,7 @@
                 };
             }
 
-            actindo-dropdown-menu
+            paper-dropdown-menu
             {
                 --paper-dropdown-menu-button: {
                     left: 0;
@@ -85,7 +82,8 @@
             }
 
             paper-item:focus,
-            paper-item[focused] {
+            paper-item[focused]
+            {
                 @apply(--item-focused);
             }
 
@@ -118,6 +116,7 @@
                 width: 100%;
                 @apply(--item-color);
             }
+
             #searchBox input {
                 box-sizing: border-box;
                 display: block;
@@ -163,55 +162,42 @@
             {
                 display: none;
             }
+
             .dropdown-trigger.multi
             {
                 background-color: var(--primary-background-color);
             }
+
+            paper-menu-button[multi] {
+                --paper-menu-button-content: {
+                    top: 2px;
+                    max-width: unset;
+                    background: white;
+                };
+            }
+
+            actindo-dropdown-menu {
+                width: 100%;
+            }
+
         </style>
 
         <actindo-dropdown-menu
                 required="[[required]]"
                 label="{{label}}"
+                verticalAlign="[[vertialAlign]]"
                 id="dropdown"
-                multi="[[multi]]"
                 no-label-float="[[noLabelFloat]]"
                 always-label-float="[[alwaysLabelFloat]]"
                 no-animations="[[noAnimations]]"
                 horizontal-align="[[horizontalAlign]]"
                 vertical-align="[[verticalAlign]]"
-                vertical-offset="[[verticalOffset]]"
                 disabled="[[disabled]]"
                 invalid="{{invalid}}"
                 error-message="[[errorMessage]]"
         >
             <slot name="prefix" slot="prefix"></slot>
-            <template is="dom-if" if="[[multi]]">
-                <actindo-dropdown-trigger-multi
-                    slot="dropdown-trigger"
-                    class="dropdown-trigger multi"
-                    value="[[selectedItems]]"
-                    display-field="[[displayField]]"
-                    selected-values="{{selectedValues}}"
-                    invalid="[[invalid]]"
-                    readonly
-                    disabled="[[disabled]]"
-                    value="[[selectedItemLabel]]"
-                    label="[[label]]"
-                    placeholder="[[placeholder]]"
-                    error-message="[[errorMessage]]"
-                    always-float-label="[[alwaysFloatLabel]]"
-                    no-label-float="[[noLabelFloat]]"
-                >
-
-                </actindo-dropdown-trigger-multi>
-            </template>
-            <paper-listbox
-                slot="dropdown-content"
-                selected="{{selected}}"
-                selected-values="{{selectedValues}}"
-                selected-items="{{selectedNodes}}"
-                multi="[[multi]]"
-            >
+            <paper-listbox slot="dropdown-content" selected="{{selected}}">
                 <template is="dom-if" if="{{searchable}}">
                     <iron-input
                             id="searchBox"
@@ -232,8 +218,8 @@
                             class$="paged-[[_paged]]"
                             on-tap="_onPaperItemTap"
                             label$="[[_getItemLabel(item.*)]]"
-                            item-value="[[_getValue(item.*)]]"
-                            item="[[item]]">
+                            item-value="[[_getValue(item.*)]]">
+
                             <div class="list-item-display">
                                 [[_getDisplayValue(item.*)]]
                             </div>
@@ -274,11 +260,6 @@
                     disabled: {
                         type: Boolean,
                         value: false
-                    },
-                    selectedNodes: {
-                        type: Node,
-                        value: function() {return [];},
-                        observer: "_onSelectedNodesChanged",
                     },
 
                     /**
@@ -356,7 +337,7 @@
                      * Contains the content of the value field of the selected item
                      */
                     value: {
-                        type: String | Array,
+                        type: String,
                         notify: true,
                         observer: "valueChanged"
                     },
@@ -570,12 +551,7 @@
                      */
                     verticalAlign: {
                         type: String,
-                        value: "top"
-                    },
-
-                    verticalOffset: {
-                        type: Number,
-                        value: 62
+                        value: "bottom"
                     },
 
                     /**
@@ -586,43 +562,16 @@
                         type: String,
                         value: 'right'
                     },
-                    
+
                     /**
-                     * Determines if the box is multi select
+                     * The orientation against which to align the menu dropdown
+                     * vertically relative to the dropdown trigger.
                      */
-                    multi: {
-                        type: Boolean,
-                        value: false
-                    },
-                    
-                    selectedValues: {
-                        type: Array,
-                        value: function(){ return [] },
-                    },
-
-                    selectedItems: {
-                        type: Array,
-                        value: function(){ return [] }
+                    verticalAlign: {
+                        type: String,
+                        value: 'top'
                     }
-
                 };
-            }
-            /**
-             * Determines wether selectedNodes changed
-             *
-             * @private
-             */
-            _onSelectedNodesChanged(selectedNodes)
-            {
-                const selectedItems = selectedNodes.map(node => node.item);
-                const value = selectedItems.map(item => {
-                    return Polymer.Path.get( item, this.valueField )
-                });
-
-                this.setProperties({
-                    value: value,
-                    selectedItems: selectedItems
-                })
             }
 
             /**
@@ -870,10 +819,6 @@
                         me.totalItems = Polymer.Path.get(json, me.totalItemsField);
                     }
                     --me._loadingCount;
-                    if(me.multi)
-                    {
-                        me._handleValueChangedMultiSelection(me.value);
-                    }
                 } ).catch( function(error){
                     --me._loadingCount;
                     console.error("Error loading data", error);
@@ -1018,50 +963,6 @@
              * @private
              */
             valueChanged( newValue, oldValue )
-            {
-                if (this.multi)
-                {
-                    this._handleValueChangedMultiSelection(newValue, oldValue);
-                    return;
-                }
-                this._handleValueChangedSingleSelection(newValue, oldValue);
-
-            }
-
-            _handleValueChangedMultiSelection(newValue, oldValue)
-            {
-                if(Array.isArray(newValue) && newValue.length === 1 && !newValue[0])
-                {
-                    return;
-                }
-
-                if( newValue === undefined || newValue === null )
-                {
-                    this.selectedValues = [];
-                }
-                 if( this.items )
-                {
-                    const selected = [];
-                    for(let i=0;i<this.items.length;i++)
-                    {
-                        const value = Polymer.Path.get( this.items[i], this.valueField );
-                        if( newValue.includes(value) )
-                        {
-                            if( this.searchable )
-                            {
-                                selected.push(i+1);
-                            }
-                            else
-                            {
-                                selected.push(i);
-                            }
-                        }
-                    }
-                    this.selectedValues = selected;
-                }
-            }
-
-            _handleValueChangedSingleSelection(newValue, oldValue)
             {
                 if( newValue === undefined || newValue === null )
                 {
