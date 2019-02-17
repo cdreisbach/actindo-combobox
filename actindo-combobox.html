@@ -183,15 +183,16 @@
         </style>
 
         <actindo-dropdown-menu
+
                 required="[[required]]"
                 label="{{label}}"
-                verticalAlign="[[vertialAlign]]"
                 id="dropdown"
                 no-label-float="[[noLabelFloat]]"
                 always-label-float="[[alwaysLabelFloat]]"
                 no-animations="[[noAnimations]]"
                 horizontal-align="[[horizontalAlign]]"
                 vertical-align="[[verticalAlign]]"
+                vertical-offset="[[verticalOffset]]"
                 disabled="[[disabled]]"
                 invalid="{{invalid}}"
                 error-message="[[errorMessage]]"
@@ -253,6 +254,10 @@
             {
                 return {
 
+                    verticalOffset: {
+                        type: Number,
+                        value: 55
+                    },
 
                     /**
                      * set to true if combobox is disabled
@@ -563,14 +568,6 @@
                         value: 'right'
                     },
 
-                    /**
-                     * The orientation against which to align the menu dropdown
-                     * vertically relative to the dropdown trigger.
-                     */
-                    verticalAlign: {
-                        type: String,
-                        value: 'top'
-                    }
                 };
             }
 
