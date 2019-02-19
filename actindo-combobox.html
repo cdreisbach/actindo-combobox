@@ -1040,10 +1040,11 @@
                     }
                     else if( pattern.length > 2 )
                     {
+                        pattern = pattern.toLowerCase();
                         for(let i=0;i<this.items.length;i++)
                         {
-                            let displayValue = String(Polymer.Path.get( this.items[i], this.displayField ));
-                            let value = String(Polymer.Path.get( this.items[i], this.valueField ));
+                            let displayValue = String(Polymer.Path.get( this.items[i], this.displayField )).toLowerCase();
+                            let value = String(Polymer.Path.get( this.items[i], this.valueField )).toLowerCase();
                             if(
                                 displayValue.includes( pattern )
                                 ||
