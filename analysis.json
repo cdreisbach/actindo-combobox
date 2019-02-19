@@ -1655,7 +1655,7 @@
           "defaultValue": "false"
         },
         {
-          "name": "alwaysLabelFloat",
+          "name": "alwaysFloatLabel",
           "type": "boolean",
           "description": "Set to true to always float the label.",
           "privacy": "public",
@@ -2482,7 +2482,7 @@
         }
       },
       "privacy": "public",
-      "superclass": "HTMLElement",
+      "superclass": "Polymer.Element",
       "name": "ActindoCombobox",
       "attributes": [
         {
@@ -2966,7 +2966,7 @@
           "type": "boolean"
         },
         {
-          "name": "always-label-float",
+          "name": "always-float-label",
           "description": "Set to true to always float the label.",
           "sourceRange": {
             "start": {
