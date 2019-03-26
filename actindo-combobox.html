@@ -840,6 +840,7 @@
                 }
 
                 let me = this;
+                let selected = me.selected;
 
                 let found = false;
 
@@ -897,6 +898,12 @@
                     {
                         me.selected = null;
                     }
+                }
+
+                // Restore selected item even selected value is not changed
+                if( selected === me.selected )
+                {
+                    this.selectedChanged(this.value);
                 }
             }
 
