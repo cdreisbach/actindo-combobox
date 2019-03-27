@@ -99,6 +99,7 @@ respectively.
                 vertical-align="[[verticalAlign]]"
                 horizontal-align="[[horizontalAlign]]"
                 dynamic-align="[[dynamicAlign]]"
+                fit-into="[[fitInto]]"
                 vertical-offset="[[_computeMenuVerticalOffset(noLabelFloat, verticalOffset)]]"
                 disabled="[[disabled]]"
                 no-animations="[[noAnimations]]"
@@ -276,6 +277,10 @@ respectively.
                      */
                     dynamicAlign: {
                         type: Boolean
+                    },
+
+                    fitInto: {
+                        type: Object
                     },
 
                     /**
