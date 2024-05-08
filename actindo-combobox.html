@@ -889,7 +889,7 @@
                             if( this.selected !== i )
                             {
 //                                window.setTimeout( function()  {me.selected = i;me.$.dropdown.open();});
-                                me.selected = i;me.$.dropdown.open();
+                                me.selected = i;
                             }
                         }
                         else
@@ -897,7 +897,7 @@
                             if( this.selected !== i+1 ) //If searchable we have the search as first item
                             {
 //                                window.setTimeout( function()  {me.selected = i+1;me.$.dropdown.open();});
-                                me.selected = i+1;me.$.dropdown.open();
+                                me.selected = i+1;
                             }
                         }
                         found = true;
@@ -915,12 +915,12 @@
                         if( this.searchable )
                         {
 //                            window.setTimeout( function()  {me.selected = 1;me.$.dropdown.open();});
-                            me.selected = 1;me.$.dropdown.open();
+                            me.selected = 1;
                         }
                         else
                         {
 //                            window.setTimeout( function()  {me.selected = 0;me.$.dropdown.open();});
-                            me.selected = 0;me.$.dropdown.open();
+                            me.selected = 0;
                         }
                     }
                     //It is local so the items really changed and our old value is gone
